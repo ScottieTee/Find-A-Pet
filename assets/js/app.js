@@ -6,6 +6,7 @@
 var nameArray = [];
 var ageArray = [];
 var sizeArray =[];
+var descriptionArray = [];
 var breedArray = [];
 var colorArray = [];
 var photoArray = [];
@@ -73,6 +74,8 @@ function displayAnimals(data) {
       ageArray.push(ageData);
     var sizeData = data.animals[i].size;
       sizeArray.push(sizeData);
+    var descriptionData = data.animals[i].description;
+      descriptionArray.push(descriptionData);
     var breedData = data.animals[i].breeds;
       breedArray.push(breedData);
     var colorData = data.animals[i].colors;
@@ -84,6 +87,7 @@ function displayAnimals(data) {
       console.log(nameArray);
       console.log(ageArray);
       console.log(sizeArray);
+      console.log(descriptionArray);
       console.log(breedArray);
       console.log(colorArray);
       console.log(photoArray);
