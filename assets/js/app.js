@@ -3,6 +3,14 @@
 //Note: the use of async and await are used in the place of fetch() and .then() (fetch an still be used if desired)
 //It is an easier and very common way of handling promises to avoid complicated call back functions. Mad possible by a the Axios CDN (line 15 of index.html)
 
+var nameArray = [];
+var ageArray = [];
+var sizeArray =[];
+var descriptionArray = [];
+var breedArray = [];
+var colorArray = [];
+var photoArray = [];
+
 const apiKey = "TTEBA50tsWr7Y8WUwa1zWLN6wVqPx15I3mwNvgJ3P5xoAd95dT";
 const secret = "tnhGSJWW8DI2rD4ANKB6LF3sVJWbi2U1HlaFRZLB";
 let accessToken;
@@ -51,10 +59,42 @@ const fetchPets = (location) => {
           cities.push(city);
         }
         toGeoJSON();
+        displayAnimals(data);
       });
     }
   });
 };
+
+function displayAnimals(data) {
+    
+    for (var i = 0; i < data.animals.length; i++) {
+    var nameData = data.animals[i].name;
+      nameArray.push(nameData);
+    var ageData = data.animals[i].age;
+      ageArray.push(ageData);
+    var sizeData = data.animals[i].size;
+      sizeArray.push(sizeData);
+    var descriptionData = data.animals[i].description;
+      descriptionArray.push(descriptionData);
+    var breedData = data.animals[i].breeds;
+      breedArray.push(breedData);
+    var colorData = data.animals[i].colors;
+      colorArray.push(colorData);
+    var photo = data.animals[i].photos;
+      photoArray.push(photo);
+    };
+
+      console.log(nameArray);
+      console.log(ageArray);
+      console.log(sizeArray);
+      console.log(descriptionArray);
+      console.log(breedArray);
+      console.log(colorArray);
+      console.log(photoArray);
+}
+
+
+//description
 
 // Find user location
 function getLocation() {
@@ -137,6 +177,24 @@ function buildMap() {
       .addTo(map);
   }
 }
+
+// console.log(nameData);
+// console.log(ageData);
+// console.log(sizeData);
+// console.log(breedData);
+// console.log(colorData);
+// console.log(photo);
+
+
+
+
+//api data
+//name
+//age
+//size
+//breed
+//color
+//photo
 
 /***** Event listeners ******/
 
