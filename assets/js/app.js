@@ -93,8 +93,17 @@ function displayAnimals(data) {
       console.log(photoArray);
 }
 
-
+//structure for dynamically created cards:
+//NAME
+//photo
+//age, size
+//breed, color
 //description
+
+//card is created; elements to hold each piece of data is also created and
+//assigned a variable. 
+//the ""Data variables are added into the textContent
+//classes also added, depending on how we want to classify them
 
 // Find user location
 function getLocation() {
