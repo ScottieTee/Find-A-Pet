@@ -68,29 +68,42 @@ const fetchPets = (location) => {
 function displayAnimals(data) {
     
     for (var i = 0; i < data.animals.length; i++) {
-    var nameData = data.animals[i].name;
-      nameArray.push(nameData);
+    var nameData = data.animals[i].name;    
+      //nameArray.push(nameData);
     var ageData = data.animals[i].age;
-      ageArray.push(ageData);
+      //ageArray.push(ageData);
     var sizeData = data.animals[i].size;
-      sizeArray.push(sizeData);
+      //sizeArray.push(sizeData);
     var descriptionData = data.animals[i].description;
-      descriptionArray.push(descriptionData);
+      //descriptionArray.push(descriptionData);
     var breedData = data.animals[i].breeds;
-      breedArray.push(breedData);
+      //breedArray.push(breedData);
     var colorData = data.animals[i].colors;
-      colorArray.push(colorData);
+      //colorArray.push(colorData);
     var photo = data.animals[i].photos;
-      photoArray.push(photo);
-    };
+      //photoArray.push(photo);
 
-      console.log(nameArray);
-      console.log(ageArray);
-      console.log(sizeArray);
-      console.log(descriptionArray);
-      console.log(breedArray);
-      console.log(colorArray);
-      console.log(photoArray);
+    //use one singular object rather than multiple ones in order to help contain
+    //data that's relevant to each animal
+    let petData = {
+      name: nameData,
+      age: ageData,
+      size: sizeData,
+      description: descriptionData,
+      breed: breedData,
+      color: colorData,
+      photo: photo
+    }
+    console.log(petData);
+    
+    };
+      // console.log(nameArray);
+      // console.log(ageArray);
+      // console.log(sizeArray);
+      // console.log(descriptionArray);
+      // console.log(breedArray);
+      // console.log(colorArray);
+      // console.log(photoArray);
 }
 
 //structure for dynamically created cards:
