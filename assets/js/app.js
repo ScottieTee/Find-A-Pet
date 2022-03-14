@@ -2,14 +2,8 @@
 
 //Note: the use of async and await are used in the place of fetch() and .then() (fetch an still be used if desired)
 //It is an easier and very common way of handling promises to avoid complicated call back functions. Mad possible by a the Axios CDN (line 15 of index.html)
-
-var nameArray = [];
-var ageArray = [];
-var sizeArray =[];
-var descriptionArray = [];
-var breedArray = [];
-var colorArray = [];
-var photoArray = [];
+const placeholderImg = "https://media.istockphoto.com/photos/dog-cardboar-neutral-on-member-of-bone-gang-picture-id187895300?b=1&k=20&m=187895300&s=170667a&w=0&h=Cikee4baMVe3JW0VqfAc3o7LLFDcGGx32HvwbkdMVaM="
+var petData = [];
 
 const apiKey = "TTEBA50tsWr7Y8WUwa1zWLN6wVqPx15I3mwNvgJ3P5xoAd95dT";
 const secret = "tnhGSJWW8DI2rD4ANKB6LF3sVJWbi2U1HlaFRZLB";
@@ -53,7 +47,6 @@ const fetchPets = (location) => {
   }).then((res) => {
     if (res) {
       res.json().then((data) => {
-        console.log(data);
         for (let i = 0; i < data.animals.length; i++) {
           let city = data.animals[i].contact.address.city;
           cities.push(city);
@@ -65,36 +58,93 @@ const fetchPets = (location) => {
   });
 };
 
+// PET Associated Code
+
 function displayAnimals(data) {
-    
-    for (var i = 0; i < data.animals.length; i++) {
-    var nameData = data.animals[i].name;
-      nameArray.push(nameData);
-    var ageData = data.animals[i].age;
-      ageArray.push(ageData);
-    var sizeData = data.animals[i].size;
-      sizeArray.push(sizeData);
-    var descriptionData = data.animals[i].description;
-      descriptionArray.push(descriptionData);
-    var breedData = data.animals[i].breeds;
-      breedArray.push(breedData);
-    var colorData = data.animals[i].colors;
-      colorArray.push(colorData);
+  for (var i = 0; i < data.animals.length; i++) {
+    var name = data.animals[i].name;
+    var age = data.animals[i].age;
+    var size = data.animals[i].size;
+    var description = data.animals[i].description;
+    var breed = data.animals[i].breeds;
+    var color = data.animals[i].colors;
     var photo = data.animals[i].photos;
-      photoArray.push(photo);
+
+    const onePet = {
+      name,
+      age,
+      size,
+      description,
+      breed,
+      color,
+      photo,
     };
 
-      console.log(nameArray);
-      console.log(ageArray);
-      console.log(sizeArray);
-      console.log(descriptionArray);
-      console.log(breedArray);
-      console.log(colorArray);
-      console.log(photoArray);
+    petData.push(onePet);
+  }
+  //after pet objects are all pushed into array, build the cards with object data
+  buildCards(petData);
 }
 
+function buildCards(petArray) {
+  const mainContainer = document.querySelector("#main");
+  mainContainer.innerHTML = "";
+  const div1 = makeEl('div', 'row'); //Only make 1
+  for (let i = 0; i < petArray.length; i++) {
+    const div2 = makeEl('div', 'col s12 l3 m6')
+    const div3 = makeEl('div', 'card')
+    const div4 = makeEl('div', 'card-image')
+    const img = makeEl('img')
+    // If no image, use placeholder image from placeholderImg url
+    if(!petArray[i].photo[i]){
+      img.setAttribute('src', placeholderImg);
+    } 
+    else if(!petArray[i].photo[i].medium){
+      img.setAttribute('src', petArray[i].photo[i].large)
+    }
+    else{img.setAttribute('src', petArray[i].photo[i].medium)}
+  
+    const span = makeEl('span', 'card-title pet-name')
+    span.textContent = petArray[i].name;
+    div4.append(img, span);
+    const div5 = makeEl('div', 'card-content')
+    const pEl = makeEl('p')
+    pEl.setAttribute('maxlength', '15')
+    // If no description provided, fill it in
+    if(!petArray[i].description){
+      pEl.textContent = "Oops! No description was provided for this pet."
+    } else{ pEl.textContent = petArray[i].description; }
+    div5.append(pEl)
+    const div6 = makeEl('div', 'card-action')
+    const btn = makeEl('button', 'waves-effect waves-light btn', 'my-location')
+    btn.innerHTML = 'Adopt Me<i class="fa-solid fa-paw"></i>';
+    div6.append(btn);
+    div3.append(div4, div5, div6);
+    div2.append(div3);
+    div1.append(div2);
+  }
+  mainContainer.append(div1);
+  
+}
 
-//description
+//Make elements
+const makeEl = function (el, classN, idName) {
+  if (!classN && !idName) {
+    const element = document.createElement(el);
+    return element;
+  } else if (!idName) {
+    const element = document.createElement(el);
+    element.className = `${classN}`;
+    return element;
+  } else {
+    const element = document.createElement(el);
+    element.className = classN;
+    element.id = idName;
+    return element;
+  }
+};
+
+// PET Associated Code
 
 // Find user location
 function getLocation() {
@@ -184,9 +234,6 @@ function buildMap() {
 // console.log(breedData);
 // console.log(colorData);
 // console.log(photo);
-
-
-
 
 //api data
 //name
