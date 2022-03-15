@@ -78,6 +78,8 @@ function displayAnimals(data) {
     var contactData = data.animals[i].contact;
     var photo = data.animals[i].photos;
 
+    //var attrData = data.animals[i].attributes;
+
     let petData = {
       name: nameData,
       age: ageData,
@@ -92,6 +94,8 @@ function displayAnimals(data) {
     console.log(petData);
     };
 }
+
+//displayAnimals--need to be called elsewhere in code? when finding geolocation
 
 //structure for dynamically created cards:
 //NAME
