@@ -68,33 +68,46 @@ const fetchPets = (location) => {
 function displayAnimals(data) {
     
     for (var i = 0; i < data.animals.length; i++) {
-    var nameData = data.animals[i].name;
-      nameArray.push(nameData);
+    var nameData = data.animals[i].name;    
     var ageData = data.animals[i].age;
-      ageArray.push(ageData);
     var sizeData = data.animals[i].size;
-      sizeArray.push(sizeData);
+    var distanceData = data.animals[i].distance;
     var descriptionData = data.animals[i].description;
-      descriptionArray.push(descriptionData);
     var breedData = data.animals[i].breeds;
-      breedArray.push(breedData);
     var colorData = data.animals[i].colors;
-      colorArray.push(colorData);
+    var contactData = data.animals[i].contact;
     var photo = data.animals[i].photos;
-      photoArray.push(photo);
-    };
 
-      console.log(nameArray);
-      console.log(ageArray);
-      console.log(sizeArray);
-      console.log(descriptionArray);
-      console.log(breedArray);
-      console.log(colorArray);
-      console.log(photoArray);
+    //var attrData = data.animals[i].attributes;
+
+    let petData = {
+      name: nameData,
+      age: ageData,
+      size: sizeData,
+      distance: distanceData,
+      description: descriptionData,
+      breed: breedData,
+      color: colorData,
+      contact: contactData,
+      photo: photo
+    }
+    console.log(petData);
+    };
 }
 
+//displayAnimals--need to be called elsewhere in code? when finding geolocation
 
+//structure for dynamically created cards:
+//NAME
+//photo
+//age, size
+//breed, color
 //description
+
+//card is created; elements to hold each piece of data is also created and
+//assigned a variable. 
+//the ""Data variables are added into the textContent
+//classes also added, depending on how we want to classify them
 
 // Find user location
 function getLocation() {
@@ -177,24 +190,6 @@ function buildMap() {
       .addTo(map);
   }
 }
-
-// console.log(nameData);
-// console.log(ageData);
-// console.log(sizeData);
-// console.log(breedData);
-// console.log(colorData);
-// console.log(photo);
-
-
-
-
-//api data
-//name
-//age
-//size
-//breed
-//color
-//photo
 
 /***** Event listeners ******/
 
