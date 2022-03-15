@@ -2,8 +2,10 @@
 
 //Note: the use of async and await are used in the place of fetch() and .then() (fetch an still be used if desired)
 //It is an easier and very common way of handling promises to avoid complicated call back functions. Mad possible by a the Axios CDN (line 15 of index.html)
-const placeholderImg = "https://media.istockphoto.com/photos/dog-cardboar-neutral-on-member-of-bone-gang-picture-id187895300?b=1&k=20&m=187895300&s=170667a&w=0&h=Cikee4baMVe3JW0VqfAc3o7LLFDcGGx32HvwbkdMVaM="
+const placeholderImg =
+  "https://media.istockphoto.com/photos/dog-cardboar-neutral-on-member-of-bone-gang-picture-id187895300?b=1&k=20&m=187895300&s=170667a&w=0&h=Cikee4baMVe3JW0VqfAc3o7LLFDcGGx32HvwbkdMVaM=";
 var petData = [];
+const mainContainer = document.querySelector("#main");
 
 const apiKey = "TTEBA50tsWr7Y8WUwa1zWLN6wVqPx15I3mwNvgJ3P5xoAd95dT";
 const secret = "tnhGSJWW8DI2rD4ANKB6LF3sVJWbi2U1HlaFRZLB";
@@ -52,6 +54,7 @@ const fetchPets = (location) => {
           cities.push(city);
         }
         toGeoJSON();
+        console.log(data);
         displayAnimals(data);
       });
     }
@@ -69,6 +72,7 @@ function displayAnimals(data) {
     var breed = data.animals[i].breeds;
     var color = data.animals[i].colors;
     var photo = data.animals[i].photos;
+    let contact = data.animals[i].contact;
 
     const onePet = {
       name,
@@ -78,45 +82,48 @@ function displayAnimals(data) {
       breed,
       color,
       photo,
+      contact
     };
-
     petData.push(onePet);
   }
+  console.log(petData);
   //after pet objects are all pushed into array, build the cards with object data
   buildCards(petData);
 }
 
 function buildCards(petArray) {
-  const mainContainer = document.querySelector("#main");
   mainContainer.innerHTML = "";
-  const div1 = makeEl('div', 'row'); //Only make 1
+  const div1 = makeEl("div", "row"); //Only make 1
   for (let i = 0; i < petArray.length; i++) {
-    const div2 = makeEl('div', 'col s12 l3 m6')
-    const div3 = makeEl('div', 'card')
-    const div4 = makeEl('div', 'card-image')
-    const img = makeEl('img')
+    const div2 = makeEl("div", "col s12 l3 m6");
+    const div3 = makeEl("div", "card");
+    const div4 = makeEl("div", "card-image");
+    const img = makeEl("img");
     // If no image, use placeholder image from placeholderImg url
-    if(!petArray[i].photo[i]){
-      img.setAttribute('src', placeholderImg);
-    } 
-    else if(!petArray[i].photo[i].medium){
-      img.setAttribute('src', petArray[i].photo[i].large)
+    if (!petArray[i].photo[0]) {
+      img.setAttribute("src", placeholderImg);
+    } else if (!petArray[i].photo[0].medium) {
+      img.setAttribute("src", petArray[i].photo[0].large);
+    } else {
+      img.setAttribute("src", petArray[i].photo[0].medium);
     }
-    else{img.setAttribute('src', petArray[i].photo[i].medium)}
-  
-    const span = makeEl('span', 'card-title pet-name')
+
+    const span = makeEl("span", "card-title pet-name");
     span.textContent = petArray[i].name;
     div4.append(img, span);
-    const div5 = makeEl('div', 'card-content')
-    const pEl = makeEl('p')
-    pEl.setAttribute('maxlength', '15')
+    const div5 = makeEl("div", "card-content");
+    const pEl = makeEl("p");
+    pEl.setAttribute("maxlength", "15");
     // If no description provided, fill it in
-    if(!petArray[i].description){
-      pEl.textContent = "Oops! No description was provided for this pet."
-    } else{ pEl.textContent = petArray[i].description; }
-    div5.append(pEl)
-    const div6 = makeEl('div', 'card-action')
-    const btn = makeEl('button', 'waves-effect waves-light btn', 'my-location')
+    if (!petArray[i].description) {
+      pEl.textContent = "Oops! No description was provided for this pet.";
+    } else {
+      pEl.textContent = petArray[i].description;
+    }
+    div5.append(pEl);
+    const div6 = makeEl("div", "card-action");
+    const btn = makeEl("button", "waves-effect waves-light btn", "my-location");
+    btn.setAttribute("data-index", `${i}`);
     btn.innerHTML = 'Adopt Me<i class="fa-solid fa-paw"></i>';
     div6.append(btn);
     div3.append(div4, div5, div6);
@@ -124,7 +131,6 @@ function buildCards(petArray) {
     div1.append(div2);
   }
   mainContainer.append(div1);
-  
 }
 
 //Make elements
@@ -143,6 +149,62 @@ const makeEl = function (el, classN, idName) {
     return element;
   }
 };
+
+async function displayPet(data, index) {
+  mainContainer.innerHTML = "";
+  const mapDiv = makeEl('div', 'map', 'map')
+  const div1 = makeEl("div", "row"); //Only make 1
+  const div2 = makeEl("div", "col s12 l3 m6");
+  const div3 = makeEl("div", "card");
+  const div4 = makeEl("div", "card-image");
+  const img = makeEl("img");
+  // If no image, use placeholder image from placeholderImg url
+  if (!data[index].photo[0]) {
+    img.setAttribute("src", placeholderImg);
+  } else if (!data[index].photo[0].medium) {
+    img.setAttribute("src", data[index].photo[0].large);
+  } else {
+    img.setAttribute("src", data[index].photo[0].medium);
+  }
+
+  const span = makeEl("span", "card-title pet-name");
+  span.textContent = data[index].name;
+  div4.append(img, span);
+  const div5 = makeEl("div", "card-content");
+  const pEl = makeEl("p");
+  pEl.setAttribute("maxlength", "15");
+  // If no description provided, fill it in
+  if (!data[index].description) {
+    pEl.textContent = "Oops! No description was provided for this pet.";
+  } else {
+    pEl.textContent = data[index].description;
+  }
+  div5.append(pEl);
+  const div6 = makeEl("div", "card-action");
+  const btn1 = makeEl("button", "waves-effect waves-light btn", "my-location");
+  btn1.setAttribute("data-index", `${index}`);
+  btn1.innerHTML = 'Adopt Me<i class="fa-solid fa-paw"></i>';
+  //const btn2 = makeEl("button", "waves-effect waves-light btn", "my-location");
+  div6.append(btn1);
+  div3.append(div4, div5, div6);
+  div2.append(div3);
+  div1.append(div2);
+  mainContainer.append(div1, mapDiv);
+
+  const city = petData[index].contact.address.city; 
+  let geoLoc = await cityToGeoData(city);
+  console.log(geoLoc);
+  buildMap(geoLoc);
+
+}
+
+function showPet(e) {
+  if (e.target.getAttribute("data-index")) {
+    let petIndex = parseInt(e.target.getAttribute("data-index"))
+    //console.log(typeof petIndex);
+    displayPet(petData, petIndex);
+  }
+}
 
 // PET Associated Code
 
@@ -208,22 +270,22 @@ async function toGeoJSON() {
   //console.log(cityGeoJSON);
 }
 
-function buildMap() {
+async function buildMap(geo) {
   mapboxgl.accessToken =
     "pk.eyJ1IjoiYXBwc29sbyIsImEiOiJjbDA5dmptYWowaGcwM2lwOTY0dGxlOWp3In0.kulAfdlLVedrwX0Yh0qruQ";
 
-  const map = new mapboxgl.Map({
+  const map = await new mapboxgl.Map({
     container: "map", // container ID
     style: "mapbox://styles/mapbox/streets-v11", // style URL
-    center: [-80.9, 35.2], // starting position [lng, lat]
+    center: geo, // starting position [lng, lat]
     zoom: 6, // starting zoom
   });
 
   // Create a default Marker and add it to the map.
 
   for (let i = 0; i < cityGeoJSON.length; i++) {
-    let marker1 = new mapboxgl.Marker({ color: "rgb(20, 200, 225)" })
-      .setLngLat(cityGeoJSON[i])
+    let marker1 = await new mapboxgl.Marker({ color: "rgb(20, 200, 225)" })
+      .setLngLat(geo)
       .addTo(map);
   }
 }
@@ -266,6 +328,8 @@ zipForm.addEventListener("submit", zipFormHandler);
 // toGeoJSON() then runs the function cityToGeoData() which converts the city names (cities array), form the pet data, into coordinates (latitude and longitude) and is stored in an array called cityGeoJSON[]
 // Once pet city names have been converted to lat and long, buildMap() is ran.
 // Build map pulls lat and long data from cityGeoJSON[] and places the cursores on the map.
+
+mainContainer.addEventListener("click", showPet);
 
 // Navbar Dropdown
 
