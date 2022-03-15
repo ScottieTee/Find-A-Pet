@@ -69,19 +69,13 @@ function displayAnimals(data) {
     
     for (var i = 0; i < data.animals.length; i++) {
     var nameData = data.animals[i].name;    
-      //nameArray.push(nameData);
     var ageData = data.animals[i].age;
-      //ageArray.push(ageData);
     var sizeData = data.animals[i].size;
-      //sizeArray.push(sizeData);
+    var distanceData = data.animals[i].distance;
     var descriptionData = data.animals[i].description;
-      //descriptionArray.push(descriptionData);
     var breedData = data.animals[i].breeds;
-      //breedArray.push(breedData);
     var colorData = data.animals[i].colors;
-      //colorArray.push(colorData);
     var photo = data.animals[i].photos;
-      //photoArray.push(photo);
 
     //use one singular object rather than multiple ones in order to help contain
     //data that's relevant to each animal
@@ -89,21 +83,14 @@ function displayAnimals(data) {
       name: nameData,
       age: ageData,
       size: sizeData,
+      distance: distanceData,
       description: descriptionData,
       breed: breedData,
       color: colorData,
       photo: photo
     }
     console.log(petData);
-    
     };
-      // console.log(nameArray);
-      // console.log(ageArray);
-      // console.log(sizeArray);
-      // console.log(descriptionArray);
-      // console.log(breedArray);
-      // console.log(colorArray);
-      // console.log(photoArray);
 }
 
 //structure for dynamically created cards:
@@ -199,24 +186,6 @@ function buildMap() {
       .addTo(map);
   }
 }
-
-// console.log(nameData);
-// console.log(ageData);
-// console.log(sizeData);
-// console.log(breedData);
-// console.log(colorData);
-// console.log(photo);
-
-
-
-
-//api data
-//name
-//age
-//size
-//breed
-//color
-//photo
 
 /***** Event listeners ******/
 
