@@ -75,10 +75,9 @@ function displayAnimals(data) {
     var descriptionData = data.animals[i].description;
     var breedData = data.animals[i].breeds;
     var colorData = data.animals[i].colors;
+    var contactData = data.animals[i].contact;
     var photo = data.animals[i].photos;
 
-    //use one singular object rather than multiple ones in order to help contain
-    //data that's relevant to each animal
     let petData = {
       name: nameData,
       age: ageData,
@@ -87,6 +86,7 @@ function displayAnimals(data) {
       description: descriptionData,
       breed: breedData,
       color: colorData,
+      contact: contactData,
       photo: photo
     }
     console.log(petData);
