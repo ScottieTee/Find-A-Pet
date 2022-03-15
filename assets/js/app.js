@@ -168,3 +168,44 @@ document.addEventListener("DOMContentLoaded", function () {
   var elems = document.querySelectorAll(".sidenav");
   var instances = M.Sidenav.init(elems);
 });
+
+
+//cards dynamically created 
+let main = document.querySelector('#main');
+
+//make elements
+const makeEl = (el, classN, idName) => {
+if (!classN && !idName){
+  const element = document.createElement(el);
+  return element;
+} else if (!idName) {
+  const element = document.createElement(el);
+  element.className = `${classN}`;
+  return element;
+} else {
+  const element = document.createElement(el);
+  element.className = classN;
+  element.id = idName;
+  return element;
+}
+};
+
+const div1 = makeEl('div', 'nav-wrapper')
+const a1 = makeEl('brand-logo')
+const a2 = makeEl('sidenav-trigger')
+const list1 = makeEl('ul', 'right')
+const list2 = makeEl('ul', 'right', 'mobile-demo')
+const div2 = makeEl('div', 'row')
+const div3 = makeEl('div', 'col')
+const div4 = makeEl ('div', 'card')
+const 
+
+
+ // let newEl = document.createElement(el);
+  //newEl.classList = cl;
+  //return newEl
+
+
+newEl = ('main, row');
+newEl = ('main, col');
+newEl = ('')
