@@ -204,8 +204,3 @@ const
  // let newEl = document.createElement(el);
   //newEl.classList = cl;
   //return newEl
-
-
-newEl = ('main, row');
-newEl = ('main, col');
-newEl = ('')
