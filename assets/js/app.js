@@ -14,6 +14,8 @@ let accessToken;
 const myLocation = document.querySelector("#my-location");
 const zipForm = document.querySelector("#zip-form");
 
+let petStorageArray = [];
+
 // cities[] is filled with city names from pet locations in fetchPets() for loop
 const cities = [];
 // cities[] is then converted to coordinates via toGeoJSON() and stored in cityGeoJSON[] - this data is for the map pins
@@ -129,8 +131,62 @@ function buildCards(petArray) {
     div3.append(div4, div5, div6);
     div2.append(div3);
     div1.append(div2);
+
+    //when the button is clicked, move to localStorage function (petButton)
+    btn.onclick = function (petArray) {
+      var selectPet = petData; 
+      petInfo(selectPet[i]);
+      // savePet(selectPet[i]);
+    };
   }
   mainContainer.append(div1);
+}
+
+//make divs and p for pet page content
+const petInfo = function (selectPet) {
+    var petDiv = document.createElement("div");
+    var petName = document.createElement("p");
+      petName.textContent = selectPet.name;
+    var petAge = document.createElement("p");
+      petAge.textContent = selectPet.age;
+    var petBreed = document.createElement("p");
+      petBreed.textContent = selectPet.breeds;
+    var petSize = document.createElement("p");
+      petSize.textContent = selectPet.size;
+    var petColor = document.createElement("p");
+      petColor.textContent = selectPet.colors;
+    var petDescription = document.createElement("p");
+      petDescription.textContent = selectPet.description;
+    var petContact = document.createElement("p");
+      petContact.textContent = selectPet.contact;
+
+    petDiv.textContent = 
+        petName + 
+        petAge + 
+        petBreed + 
+        petSize + 
+        petColor + 
+        petDescription + 
+        petContact;
+
+    mainContainer.appendChild(petDiv);
+    petDiv.appendChild(petName);
+    petDiv.appendChild(petDescription);
+}
+
+//localStorage to save pet in a button at the bottom of the page
+var savePet = function () {  
+  //add pet name to localStorage
+  var savePet = localStorage.setItem("petStorageArray", JSON.stringify(petStorageArray));
+}
+
+function loadPets() {
+  var data = localStorage.getItem("petStorageArray");
+  petStorageArray = JSON.parse(data);
+  if (petStorageArray === null) {
+    petStorageArray = [];
+    return false;
+  }
 }
 
 //Make elements
@@ -182,7 +238,8 @@ async function displayPet(data, index) {
   div5.append(pEl);
   const div6 = makeEl("div", "card-action");
   const btn1 = makeEl("button", "waves-effect waves-light btn", "my-location");
-  btn1.setAttribute("data-index", `${index}`);
+  // btn1.setAttribute("data-index", `${index}`);
+  btn1.setAttribute("id", "back-show");
   btn1.innerHTML = 'Adopt Me<i class="fa-solid fa-paw"></i>';
   //const btn2 = makeEl("button", "waves-effect waves-light btn", "my-location");
   div6.append(btn1);
@@ -196,14 +253,54 @@ async function displayPet(data, index) {
   console.log(geoLoc);
   buildMap(geoLoc);
 
+
+  //localstorage object
+    let petStorageData = data[index];
+    petStorageArray.push(petStorageData);
+    console.log(petStorageArray);
+
+  //if statement for html history function
+  if (petStorageArray > 0) {
+    historyButton(petStorageHistory);
+  }
+  savePet();
 }
 
 function showPet(e) {
-  if (e.target.getAttribute("data-index")) {
+  //if (e.target.getAttribute("data-index")) {
     let petIndex = parseInt(e.target.getAttribute("data-index"))
     //console.log(typeof petIndex);
     displayPet(petData, petIndex);
+  // }
+}
+
+function petFlowHandler (e) {
+  if (e.target.getAttribute("data-index")) {
+    showPet(e);
+  };
+
+  if (e.target.getAttribute("id") === "back-show") {
+    buildCards(petData);
+    historyButton(petStorageArray);
   }
+}
+
+function historyButton (petStorageHistory, index) {
+//html to display buttons for previously viewed pets
+  var divEl = document.createElement("div");
+  divEl.textContent = "previously viewed pets";
+  //buttonEl.textContent = petStorageArray.name;
+
+  for (var i = 0; i < petStorageHistory.length; i++) {
+    var buttonEl = document.createElement("button");
+    buttonEl.textContent = petStorageHistory[i].name;
+    buttonEl.classList = "waves-effect waves-light btn";
+    buttonEl.innerHTML = `${petStorageHistory[i].name}<i class="fa-solid fa-paw"></i>`;
+    divEl.appendChild(buttonEl);
+    
+  }
+
+  mainContainer.appendChild(divEl);
 }
 
 // PET Associated Code
@@ -239,6 +336,8 @@ const zipFormHandler = function (e) {
   const zipCode = document.querySelector("#zip").value;
   fetchPets(zipCode);
 };
+
+
 
 /******** MAP **********/
 
@@ -329,7 +428,7 @@ zipForm.addEventListener("submit", zipFormHandler);
 // Once pet city names have been converted to lat and long, buildMap() is ran.
 // Build map pulls lat and long data from cityGeoJSON[] and places the cursores on the map.
 
-mainContainer.addEventListener("click", showPet);
+mainContainer.addEventListener("click", petFlowHandler);
 
 // Navbar Dropdown
 
@@ -337,3 +436,5 @@ document.addEventListener("DOMContentLoaded", function () {
   var elems = document.querySelectorAll(".sidenav");
   var instances = M.Sidenav.init(elems);
 });
+
+loadPets();
