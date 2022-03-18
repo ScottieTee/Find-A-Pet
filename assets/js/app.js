@@ -2,14 +2,9 @@
 
 //Note: the use of async and await are used in the place of fetch() and .then() (fetch an still be used if desired)
 //It is an easier and very common way of handling promises to avoid complicated call back functions. Mad possible by a the Axios CDN (line 15 of index.html)
-
-var nameArray = [];
-var ageArray = [];
-var sizeArray =[];
-var descriptionArray = [];
-var breedArray = [];
-var colorArray = [];
-var photoArray = [];
+const placeholderImg =
+  "https://media.istockphoto.com/photos/dog-cardboar-neutral-on-member-of-bone-gang-picture-id187895300?b=1&k=20&m=187895300&s=170667a&w=0&h=Cikee4baMVe3JW0VqfAc3o7LLFDcGGx32HvwbkdMVaM=";
+const mainContainer = document.querySelector("#main");
 
 const apiKey = "TTEBA50tsWr7Y8WUwa1zWLN6wVqPx15I3mwNvgJ3P5xoAd95dT";
 const secret = "tnhGSJWW8DI2rD4ANKB6LF3sVJWbi2U1HlaFRZLB";
@@ -18,9 +13,10 @@ let accessToken;
 const myLocation = document.querySelector("#my-location");
 const zipForm = document.querySelector("#zip-form");
 
-// cities[] is filled with city names from pet locations in fetchPets() for loop
+let petStorageArray = [];
+var petData = [];
+
 const cities = [];
-// cities[] is then converted to coordinates via toGeoJSON() and stored in cityGeoJSON[] - this data is for the map pins
 let cityGeoJSON = [];
 
 const fetchAccessToken = async () => {
@@ -53,56 +49,271 @@ const fetchPets = (location) => {
   }).then((res) => {
     if (res) {
       res.json().then((data) => {
-        console.log(data);
         for (let i = 0; i < data.animals.length; i++) {
           let city = data.animals[i].contact.address.city;
           cities.push(city);
         }
         toGeoJSON();
+        console.log(data);
         displayAnimals(data);
       });
     }
   });
 };
 
+// PET Associated Code
+
 function displayAnimals(data) {
-    
-    for (var i = 0; i < data.animals.length; i++) {
-    var nameData = data.animals[i].name;    
-    var ageData = data.animals[i].age;
-    var sizeData = data.animals[i].size;
-    var distanceData = data.animals[i].distance;
-    var descriptionData = data.animals[i].description;
-    var breedData = data.animals[i].breeds;
-    var colorData = data.animals[i].colors;
-    var contactData = data.animals[i].contact;
+  for (var i = 0; i < data.animals.length; i++) {
+    var name = data.animals[i].name;
+    var age = data.animals[i].age;
+    var size = data.animals[i].size;
+    var description = data.animals[i].description;
+    var breed = data.animals[i].breeds;
+    var color = data.animals[i].colors;
     var photo = data.animals[i].photos;
+    let contact = data.animals[i].contact;
 
-    //var attrData = data.animals[i].attributes;
-
-    let petData = {
-      name: nameData,
-      age: ageData,
-      size: sizeData,
-      distance: distanceData,
-      description: descriptionData,
-      breed: breedData,
-      color: colorData,
-      contact: contactData,
-      photo: photo
-    }
-    console.log(petData);
+    const onePet = {
+      name,
+      age,
+      size,
+      description,
+      breed,
+      color,
+      photo,
+      contact,
     };
+    petData.push(onePet);
+  }
+  console.log(petData);
+  //after pet objects are all pushed into array, build the cards with object data
+  buildCards(petData);
+  historyButton(petStorageArray);
 }
 
-//displayAnimals--need to be called elsewhere in code? when finding geolocation
+function buildCards(petArray) {
+  mainContainer.innerHTML = "";
+  const div1 = makeEl("div", "row"); //Only make 1
+  for (let i = 0; i < petArray.length; i++) {
+    const div2 = makeEl("div", "col s12 l3 m6");
+    const div3 = makeEl("div", "card");
+    const div4 = makeEl("div", "card-image");
+    const img = makeEl("img");
+    // If no image, use placeholder image from placeholderImg url
+    if (!petArray[i].photo[0]) {
+      img.setAttribute("src", placeholderImg);
+    } else if (!petArray[i].photo[0].medium) {
+      img.setAttribute("src", petArray[i].photo[0].large);
+    } else {
+      img.setAttribute("src", petArray[i].photo[0].medium);
+    }
 
-//structure for dynamically created cards:
-//NAME
-//photo
-//age, size
-//breed, color
-//description
+    const span = makeEl("span", "card-title pet-name");
+    span.textContent = petArray[i].name;
+    div4.append(img, span);
+    const div5 = makeEl("div", "card-content");
+    const pEl = makeEl("p");
+    pEl.setAttribute("maxlength", "15");
+    // If no description provided, fill it in
+    if (!petArray[i].description) {
+      pEl.textContent = "Oops! No description was provided for this pet.";
+    } else {
+      pEl.textContent = petArray[i].description;
+    }
+    div5.append(pEl);
+    const div6 = makeEl("div", "card-action");
+    const btn = makeEl("button", "waves-effect waves-light btn", "my-location");
+    btn.setAttribute("data-index", `${i}`);
+    btn.innerHTML = 'Adopt Me<i class="fa-solid fa-paw"></i>';
+    div6.append(btn);
+    div3.append(div4, div5, div6);
+    div2.append(div3);
+    div1.append(div2);
+
+    //when the button is clicked, move to localStorage function (petButton)
+    btn.onclick = function (petArray) {
+      var selectPet = petData;
+      petInfo(selectPet[i]);
+    };
+  }
+  mainContainer.append(div1);
+}
+
+//make divs and p for pet page content
+const petInfo = function (selectPet) {
+  var petDiv = document.createElement("div");
+  var petName = document.createElement("p");
+  petName.textContent = selectPet.name;
+  var petAge = document.createElement("p");
+  petAge.textContent = selectPet.age;
+  var petBreed = document.createElement("p");
+  petBreed.textContent = selectPet.breeds;
+  var petSize = document.createElement("p");
+  petSize.textContent = selectPet.size;
+  var petColor = document.createElement("p");
+  petColor.textContent = selectPet.colors;
+  var petDescription = document.createElement("p");
+  petDescription.textContent = selectPet.description;
+  var petContact = document.createElement("p");
+  petContact.textContent = selectPet.contact;
+
+  petDiv.textContent =
+    petName +
+    petAge +
+    petBreed +
+    petSize +
+    petColor +
+    petDescription +
+    petContact;
+
+  mainContainer.appendChild(petDiv);
+  petDiv.appendChild(petName);
+  petDiv.appendChild(petDescription);
+};
+
+//localStorage to save pet in a button at the bottom of the page
+var savePet = function () {
+  //add pet name to localStorage
+  localStorage.setItem("petStorageArray", JSON.stringify(petStorageArray));
+};
+
+function loadPets() {
+  var data = localStorage.getItem("petStorageArray");
+  petStorageArray = JSON.parse(data);
+  if (petStorageArray === null) {
+    petStorageArray = [];
+    return false;
+  }
+}
+
+//Make elements
+const makeEl = function (el, classN, idName) {
+  if (!classN && !idName) {
+    const element = document.createElement(el);
+    return element;
+  } else if (!idName) {
+    const element = document.createElement(el);
+    element.className = `${classN}`;
+    return element;
+  } else {
+    const element = document.createElement(el);
+    element.className = classN;
+    element.id = idName;
+    return element;
+  }
+};
+
+async function displayPet(data, index, e) {
+  mainContainer.innerHTML = "";
+  const mapDiv = makeEl("div", "map", "map");
+  const div1 = makeEl("div", "row"); //Only make 1
+  const div2 = makeEl("div", "col s12 l3 m6");
+  const div3 = makeEl("div", "row s12 l6 m6");
+  const div4 = makeEl("div");
+  const img = makeEl("img");
+
+  // If no image, use placeholder image from placeholderImg url
+
+  if (!data[index].photo[0]) {
+    img.setAttribute("src", placeholderImg);
+  } else if (!data[index].photo[0].medium) {
+    img.setAttribute("src", data[index].photo[0].large);
+  } else {
+    img.setAttribute("src", data[index].photo[0].medium);
+  }
+
+  const span = makeEl("span", "pet-name");
+  span.textContent = data[index].name;
+  div4.append(img);
+  // div4.append(span);
+  const div5 = makeEl("div");
+  const pEl = makeEl("p");
+  //pEl.setAttribute("maxlength", "15");
+  // If no description provided, fill it in
+  if (!data[index].description) {
+    pEl.textContent = "Oops! No description was provided for this pet.";
+  } else {
+    pEl.textContent = data[index].description;
+  }
+  div5.append(span);
+  div5.append(pEl);
+  const div6 = makeEl("div", "card-action");
+  const btn1 = makeEl("button", "waves-effect waves-light btn", "my-location");
+  // btn1.setAttribute("data-index", `${index}`);
+  btn1.setAttribute("id", "back-show");
+  btn1.innerHTML = 'Back<i class="fa-solid fa-paw"></i>';
+  //const btn2 = makeEl("button", "waves-effect waves-light btn", "my-location");
+  div6.append(btn1);
+  div3.append(div4, div5, div6);
+  div2.append(div3);
+  div1.append(div2);
+  mainContainer.append(div1, mapDiv);
+
+  const city = petData[index].contact.address.city;
+  let geoLoc = await cityToGeoData(city);
+
+  //localstorage object
+  console.log(petStorageArray);
+
+  //Don't push to local storage if doubled
+  let notDupPet = petStorageArray.findIndex((object) => {
+    return object.name === data[index].name;
+  });
+  // if notDupPet === -1 it is bacuase it is not found in the local storage array (petStorageArray). So we push it to storage
+  if (notDupPet === -1) {
+    let petStorageData = data[index];
+    petStorageArray.push(petStorageData);
+  }
+
+  savePet(e);
+}
+
+function showPet(e) {
+  let petIndex = parseInt(e.target.getAttribute("data-index"));
+  displayPet(petData, petIndex); //index of the pet object passed into displayPet();
+}
+
+function petFlowHandler(e) {
+  if (e.target.getAttribute("data-index")) {
+    showPet(e);
+  }
+
+  if (e.target.getAttribute("id") === "back-show") {
+    buildCards(petData);
+    historyButton(petStorageArray);
+  }
+  // Pulls pet data from local stroage to build card. (Prevents error when running a new search).
+  if (e.target.getAttribute("data-past")) {
+    let index = e.target.getAttribute("data-past");
+    displayPet(petStorageArray, index);
+  }
+}
+
+function historyButton(petStorageHistory) {
+  //html to display buttons for previously viewed pets
+  var divEl = document.createElement("div");
+  divEl.id = "past-pets";
+  divEl.textContent = "Previously Viewed Pets:";
+
+  for (var i = 0; i < petStorageHistory.length; i++) {
+    let petName = petStorageHistory[i].name;
+    var buttonEl = document.createElement("button");
+    buttonEl.textContent = petStorageHistory[i].name;
+    buttonEl.classList = "col waves-effect waves-light btn";
+    buttonEl.innerHTML = `${petStorageHistory[i].name}<i class="fa-solid fa-paw"></i>`;
+
+    let foundPetIndex = petStorageArray.findIndex((object) => {
+      return object.name == petName;
+    });
+
+    buttonEl.setAttribute("data-past", `${foundPetIndex}`);
+    divEl.appendChild(buttonEl);
+  }
+  mainContainer.appendChild(divEl);
+}
+
+// PET Associated Code Ends
 
 //card is created; elements to hold each piece of data is also created and
 //assigned a variable. 
@@ -118,7 +329,7 @@ function getLocation() {
   }
 }
 
-// Once user location found, latitude and longitude
+// Once user location found, get latitude and longitude
 function showPosition(position) {
   const lat = position.coords.latitude.toString();
   const long = position.coords.longitude.toString();
@@ -141,7 +352,7 @@ const zipFormHandler = function (e) {
   fetchPets(zipCode);
 };
 
-/******** MAP **********/
+/******** City to Coordinates Conversion **********/
 
 async function cityToGeoData(city) {
   const respons = await axios.get(
@@ -160,34 +371,7 @@ async function cityToGeoData(city) {
 async function toGeoJSON() {
   for (let i = 0; i < cities.length; i++) {
     let data = await cityToGeoData(cities[i]);
-
     cityGeoJSON.push(data);
-    //console.log(data);
-
-    if (i === cities.length - 1) {
-      //buildMap();
-    }
-  }
-  //console.log(cityGeoJSON);
-}
-
-function buildMap() {
-  mapboxgl.accessToken =
-    "pk.eyJ1IjoiYXBwc29sbyIsImEiOiJjbDA5dmptYWowaGcwM2lwOTY0dGxlOWp3In0.kulAfdlLVedrwX0Yh0qruQ";
-
-  const map = new mapboxgl.Map({
-    container: "map", // container ID
-    style: "mapbox://styles/mapbox/streets-v11", // style URL
-    center: [-80.9, 35.2], // starting position [lng, lat]
-    zoom: 6, // starting zoom
-  });
-
-  // Create a default Marker and add it to the map.
-
-  for (let i = 0; i < cityGeoJSON.length; i++) {
-    let marker1 = new mapboxgl.Marker({ color: "rgb(20, 200, 225)" })
-      .setLngLat(cityGeoJSON[i])
-      .addTo(map);
   }
 }
 
@@ -195,29 +379,14 @@ function buildMap() {
 
 myLocation.addEventListener("click", myLocationHandler);
 
-// myLocationHandler runs the getLocation function, which uses the client side function navigator.geolocation.getCurrentPosition() (used to get the current position of the device).
-// navigator.geolocation.getCurrentPosition() then runs showPosition()
-// The latitude and longitude are then pulled from the position object in showPosition()
-// latitude and longitude are then passed into fetchPets() which queries the pet database and send back pets near you as the variable "data".
-// data is then passed onto a for loop to pull out the pet cities and stores city names into the cities array.
-// The function toGeoJSON() is ran after the for loop completes.
-// toGeoJSON() then runs the function cityToGeoData() which converts the city names (cities array), form the pet data, into coordinates (latitude and longitude) and is stored in an array called cityGeoJSON[]
-// Once pet city names have been converted to lat and long, buildMap() is ran.
-// Build map pulls lat and long data from cityGeoJSON[] and places the pins on the map.
-
 zipForm.addEventListener("submit", zipFormHandler);
 
-// zipFormHandler similer to myLocationHandler, just doesnt use navigator.geolocation.getCurrentPosition()
-// zip code is passed into fetchPets() which queries the pet database and send back pets near you as the variable "data".
-// data is then passed onto a for loop to pull out the pet cities and stores city names into the cities array.
-// The function toGeoJSON() is ran after the for loop completes.
-// toGeoJSON() then runs the function cityToGeoData() which converts the city names (cities array), form the pet data, into coordinates (latitude and longitude) and is stored in an array called cityGeoJSON[]
-// Once pet city names have been converted to lat and long, buildMap() is ran.
-// Build map pulls lat and long data from cityGeoJSON[] and places the cursores on the map.
+mainContainer.addEventListener("click", petFlowHandler);
 
 // Navbar Dropdown
-
 document.addEventListener("DOMContentLoaded", function () {
   var elems = document.querySelectorAll(".sidenav");
   var instances = M.Sidenav.init(elems);
 });
+
+loadPets();

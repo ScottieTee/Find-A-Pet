@@ -41,6 +41,22 @@ i {
   margin-left: 0.5rem;
 }
 
+.card-content p{
+  text-overflow: ellipsis;
+overflow: hidden;
+white-space: nowrap;
+}
+
+.pet-name{
+  color: black;
+  font-weight: 800;
+}
+
+img{
+  height: 400px;
+  width: auto;
+}
+
 /* Media Queries */
 @media only screen and (max-width: 992px) {
   .brand-logo {
