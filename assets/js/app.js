@@ -315,6 +315,11 @@ function historyButton(petStorageHistory) {
 
 // PET Associated Code Ends
 
+//card is created; elements to hold each piece of data is also created and
+//assigned a variable. 
+//the ""Data variables are added into the textContent
+//classes also added, depending on how we want to classify them
+
 // Find user location
 function getLocation() {
   if (navigator.geolocation) {
