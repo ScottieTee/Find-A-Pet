@@ -208,11 +208,11 @@ const makeEl = function (el, classN, idName) {
 
 async function displayPet(data, index) {
   mainContainer.innerHTML = "";
-  const mapDiv = makeEl('div', 'map', 'map')
+  const mapDiv = makeEl('div', 'map', 'map');
   const div1 = makeEl("div", "row"); //Only make 1
   const div2 = makeEl("div", "col s12 l3 m6");
-  const div3 = makeEl("div", "card");
-  const div4 = makeEl("div", "card-image");
+  const div3 = makeEl("div", "row s12 l6 m6");
+  const div4 = makeEl("div");
   const img = makeEl("img");
   // If no image, use placeholder image from placeholderImg url
   if (!data[index].photo[0]) {
@@ -223,24 +223,26 @@ async function displayPet(data, index) {
     img.setAttribute("src", data[index].photo[0].medium);
   }
 
-  const span = makeEl("span", "card-title pet-name");
+  const span = makeEl("span", "pet-name");
   span.textContent = data[index].name;
-  div4.append(img, span);
-  const div5 = makeEl("div", "card-content");
+  div4.append(img);
+  // div4.append(span);
+  const div5 = makeEl("div");
   const pEl = makeEl("p");
-  pEl.setAttribute("maxlength", "15");
+  //pEl.setAttribute("maxlength", "15");
   // If no description provided, fill it in
   if (!data[index].description) {
     pEl.textContent = "Oops! No description was provided for this pet.";
   } else {
     pEl.textContent = data[index].description;
   }
+  div5.append(span);
   div5.append(pEl);
   const div6 = makeEl("div", "card-action");
   const btn1 = makeEl("button", "waves-effect waves-light btn", "my-location");
   // btn1.setAttribute("data-index", `${index}`);
   btn1.setAttribute("id", "back-show");
-  btn1.innerHTML = 'Adopt Me<i class="fa-solid fa-paw"></i>';
+  btn1.innerHTML = 'Back<i class="fa-solid fa-paw"></i>';
   //const btn2 = makeEl("button", "waves-effect waves-light btn", "my-location");
   div6.append(btn1);
   div3.append(div4, div5, div6);
@@ -285,22 +287,22 @@ function petFlowHandler (e) {
   }
 }
 
-function historyButton (petStorageHistory, index) {
+function historyButton (petStorageHistory, index, e) {
 //html to display buttons for previously viewed pets
   var divEl = document.createElement("div");
-  divEl.textContent = "previously viewed pets";
-  //buttonEl.textContent = petStorageArray.name;
+  divEl.textContent = "Previously Viewed Pets:";
 
   for (var i = 0; i < petStorageHistory.length; i++) {
     var buttonEl = document.createElement("button");
     buttonEl.textContent = petStorageHistory[i].name;
-    buttonEl.classList = "waves-effect waves-light btn";
+    buttonEl.classList = "col waves-effect waves-light btn";
     buttonEl.innerHTML = `${petStorageHistory[i].name}<i class="fa-solid fa-paw"></i>`;
     divEl.appendChild(buttonEl);
-    
   }
-
   mainContainer.appendChild(divEl);
+  if (e.target.getAttribute("data-index")) {
+    showPet();
+  }
 }
 
 // PET Associated Code
