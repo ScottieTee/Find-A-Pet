@@ -94,7 +94,7 @@ function displayAnimals(data) {
 
 function buildCards(petArray) {
   mainContainer.innerHTML = "";
-  const div1 = makeEl("div", "row"); //Only make 1
+  const div1 = makeEl("div", "row mt"); //Only make 1
   for (let i = 0; i < petArray.length; i++) {
     const div2 = makeEl("div", "col s12 l3 m6");
     const div3 = makeEl("div", "card");
@@ -206,7 +206,6 @@ const makeEl = function (el, classN, idName) {
 
 async function displayPet(data, index, e) {
   mainContainer.innerHTML = "";
-  const mapDiv = makeEl("div", "map", "map");
   const div1 = makeEl("div", "row"); //Only make 1
   const div2 = makeEl("div", "col s12 l3 m6");
   const div3 = makeEl("div", "row s12 l6 m6");
@@ -248,7 +247,7 @@ async function displayPet(data, index, e) {
   div3.append(div4, div5, div6);
   div2.append(div3);
   div1.append(div2);
-  mainContainer.append(div1, mapDiv);
+  mainContainer.append(div1);
 
   const city = petData[index].contact.address.city;
   let geoLoc = await cityToGeoData(city);
@@ -292,9 +291,11 @@ function petFlowHandler(e) {
 
 function historyButton(petStorageHistory) {
   //html to display buttons for previously viewed pets
-  var divEl = document.createElement("div");
-  divEl.id = "past-pets";
-  divEl.textContent = "Previously Viewed Pets:";
+  var div1 = document.createElement("div");
+  div1.id = "past-pets";
+  div1.innerHTML = "<h3>Previously Viewed Pets</h3>";
+
+  var div2 = makeEl("div", "button-container");
 
   for (var i = 0; i < petStorageHistory.length; i++) {
     let petName = petStorageHistory[i].name;
@@ -308,9 +309,10 @@ function historyButton(petStorageHistory) {
     });
 
     buttonEl.setAttribute("data-past", `${foundPetIndex}`);
-    divEl.appendChild(buttonEl);
+    div2.appendChild(buttonEl);
   }
-  mainContainer.appendChild(divEl);
+  div1.append(div2);
+  mainContainer.appendChild(div1);
 }
 
 // PET Associated Code Ends
