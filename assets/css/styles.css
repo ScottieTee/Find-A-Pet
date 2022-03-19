@@ -47,9 +47,15 @@ overflow: hidden;
 white-space: nowrap;
 }
 
-.pet-name{
+.pet-name {
   color: black;
   font-weight: 800;
+}
+
+.pet-page-info {
+  padding-top: 10px;
+  margin-left: 3rem;
+  font-size: 2rem;
 }
 
 img{

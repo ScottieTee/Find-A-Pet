@@ -15,6 +15,7 @@ const zipForm = document.querySelector("#zip-form");
 
 let petStorageArray = [];
 var petData = [];
+var selectPetPage = [];
 
 const cities = [];
 let cityGeoJSON = [];
@@ -114,6 +115,7 @@ function buildCards(petArray) {
     div4.append(img, span);
     const div5 = makeEl("div", "card-content");
     const pEl = makeEl("p");
+    pEl.classList = "pet-info";
     pEl.setAttribute("maxlength", "15");
     // If no description provided, fill it in
     if (!petArray[i].description) {
@@ -134,49 +136,41 @@ function buildCards(petArray) {
     //when the button is clicked, move to localStorage function (petButton)
     btn.onclick = function (petArray) {
       var selectPet = petData;
-      petInfo(selectPet[i]);
+      //petInfo(selectPet[i]);
     };
   }
   mainContainer.append(div1);
 }
 
 //make divs and p for pet page content
-const petInfo = function (selectPet) {
-  var petDiv = document.createElement("div");
-  var petName = document.createElement("p");
-  petName.textContent = selectPet.name;
-  var petAge = document.createElement("p");
-  petAge.textContent = selectPet.age;
-  var petBreed = document.createElement("p");
-  petBreed.textContent = selectPet.breeds;
-  var petSize = document.createElement("p");
-  petSize.textContent = selectPet.size;
-  var petColor = document.createElement("p");
-  petColor.textContent = selectPet.colors;
-  var petDescription = document.createElement("p");
-  petDescription.textContent = selectPet.description;
-  var petContact = document.createElement("p");
-  petContact.textContent = selectPet.contact;
+// const petInfo = function (selectPet) {
+//   //var petDiv = document.createElement("div");
+//   //petDiv.classList.add = "row";
+//   var petDivInfoEl = document.createElement("div");
+//   //petDivInfo.classList.add = "col s12 m6 l6 pet-page-info";
 
-  petDiv.textContent =
-    petName +
-    petAge +
-    petBreed +
-    petSize +
-    petColor +
-    petDescription +
-    petContact;
 
-  mainContainer.appendChild(petDiv);
-  petDiv.appendChild(petName);
-  petDiv.appendChild(petDescription);
-};
+//   petDivInfoEl.textContent = petDivInfo;
 
-//localStorage to save pet in a button at the bottom of the page
-var savePet = function () {
-  //add pet name to localStorage
-  localStorage.setItem("petStorageArray", JSON.stringify(petStorageArray));
-};
+//   selectPetPage.push(petDivInfo);
+
+//   //petDivInfo.push(petDivInfoEl);
+    
+//   for (var i = 0; i < petDivInfo.length; i++) {
+//     var petInfoEl = document.createElement("p");
+//     petInfoEl.textContent = petDivInfo;
+//   };
+//   console.log(petDivInfo);
+
+//   const petDiv = makeEl("div");
+//   mainContainer.appendChild(petDivInfoEl);
+// };
+
+// //localStorage to save pet in a button at the bottom of the page
+// var savePet = function () {
+//   //add pet name to localStorage
+//   localStorage.setItem("petStorageArray", JSON.stringify(petStorageArray));
+// };
 
 function loadPets() {
   var data = localStorage.getItem("petStorageArray");
@@ -226,7 +220,7 @@ async function displayPet(data, index, e) {
   const span = makeEl("span", "pet-name");
   span.textContent = data[index].name;
   div4.append(img);
-  // div4.append(span);
+  div4.append(span);
   const div5 = makeEl("div");
   const pEl = makeEl("p");
   //pEl.setAttribute("maxlength", "15");
@@ -236,8 +230,30 @@ async function displayPet(data, index, e) {
   } else {
     pEl.textContent = data[index].description;
   }
+  const petDiv = makeEl("div");
+  var petName = data[index].name;
+  var petAge = data[index].age;
+  var petBreed = data[index].breeds;
+  var petSize = data[index].size;
+  var petColor = data[index].colors;
+  var petDescription = data[index].description;
+  var petContact = data[index].contact;
+
+  var petDivInfo = {
+    petName,
+    petAge,
+    petBreed,
+    petSize,
+    petColor,
+    petDescription,
+    petContact
+};
+petDiv.append(petDivInfo);
+console.log(petDivInfo);
+
   div5.append(span);
-  div5.append(pEl);
+  div5.append(petDiv);
+  //div5.append(pEl);
   const div6 = makeEl("div", "card-action");
   const btn1 = makeEl("button", "waves-effect waves-light btn", "my-location");
   // btn1.setAttribute("data-index", `${index}`);
@@ -266,7 +282,7 @@ async function displayPet(data, index, e) {
     petStorageArray.push(petStorageData);
   }
 
-  savePet(e);
+  //savePet(e);
 }
 
 function showPet(e) {
