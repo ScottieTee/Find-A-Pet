@@ -60,11 +60,12 @@ body {
 
 #zip {
   font-size: 1.8rem;
+  margin-bottom: 1rem;
 }
 
 label {
   font-size: 2.2rem;
-  padding-bottom: 0.5rem;
+  padding-bottom: .5rem;
 }
 
 .pt-3 {
@@ -72,7 +73,14 @@ label {
 }
 
 .mt-40 {
-  margin-top: 10%;
+  margin-top: 5%;
+}
+
+.mt-40 button{
+  font-size: 1.5rem;
+  font-weight: bolder;
+  width: 250px;
+  height: 50px;
 }
 
 i {

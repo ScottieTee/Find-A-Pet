@@ -10,34 +10,30 @@
     <title></title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
     />
-    <script
-      src="https://kit.fontawesome.com/0bbb377993.js"
-      crossorigin="anonymous"
-    ></script>
     <link rel="stylesheet" href="./assets/css/styles.css" />
   </head>
   <body>
     <header>
       <nav>
         <div class="nav-wrapper">
-          <a href="index.html" class="brand-logo">Find-A-Pet</a>
-          <a href="#" data-target="mobile-demo" class="sidenav-trigger"
+          <ul class="sidenav" id="slide-out">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="https://www.petfinder.com/">Pet Finder</a></li>
+          </ul>
+          <a href="#" class="brand-logo">Find-A-Pet</a>
+          <a href="#" id="nav" data-target="slide-out"  class="sidenav-trigger"
             ><i class="fa-solid fa-bars"></i
           ></a>
           <ul class="right hide-on-med-and-down">
             <li><a href="index.html">Home</a></li>
+            <li><a href="https://www.petfinder.com/">Pet Finder</a></li>
           </ul>
         </div>
       </nav>
-
-      <ul class="sidenav" id="mobile-demo">
-        <li><a href="index.html">Home</a></li>
-      </ul>
     </header>
     <main id="main">
       <div class="row center-align mt-40">
@@ -52,9 +48,10 @@
               <label for="zip">Zip Code</label>
               <input
                 id="zip"
-                type="text"
+                type="number"
                 class="validate center-align mb-1"
                 placeholder="88901"
+                required
               />
               <button class="waves-effect waves-light btn">
                 Search<i class="fa-solid fa-magnifying-glass"></i>
@@ -98,6 +95,11 @@
       </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script
+      src="https://kit.fontawesome.com/0bbb377993.js"
+      crossorigin="anonymous"
+    ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="./assets/js/app.js" async defer></script>
   </body>

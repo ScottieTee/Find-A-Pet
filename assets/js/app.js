@@ -1,12 +1,9 @@
-//key and secret used in fetchAccessToken function to get access token
-
-//Note: the use of async and await are used in the place of fetch() and .then() (fetch an still be used if desired)
-//It is an easier and very common way of handling promises to avoid complicated call back functions. Mad possible by a the Axios CDN (line 15 of index.html)
 const placeholderImg =
   "https://media.istockphoto.com/photos/dog-cardboar-neutral-on-member-of-bone-gang-picture-id187895300?b=1&k=20&m=187895300&s=170667a&w=0&h=Cikee4baMVe3JW0VqfAc3o7LLFDcGGx32HvwbkdMVaM=";
 const mainContainer = document.querySelector("#main");
-const googleMap = document.querySelector('#google-map');
-const googleAddress = document.querySelector('#google-address');
+const nav = document.getElementById("nav")
+const googleMap = document.querySelector("#google-map");
+const googleAddress = document.querySelector("#google-address");
 
 const apiKey = "TTEBA50tsWr7Y8WUwa1zWLN6wVqPx15I3mwNvgJ3P5xoAd95dT";
 const secret = "tnhGSJWW8DI2rD4ANKB6LF3sVJWbi2U1HlaFRZLB";
@@ -35,7 +32,7 @@ const fetchAccessToken = async () => {
     }
   );
   const data = await petfinderRes.json();
-  accessToken = data.access_token; //Saves access token
+  accessToken = data.access_token; // Saves access token
 };
 
 // If no access token, get one and store it in above accessToken variable
@@ -57,15 +54,13 @@ const fetchPets = (location) => {
           cities.push(city);
         }
         toGeoJSON();
-        console.log(data);
         displayAnimals(data);
       });
     }
   });
 };
 
-// PET Associated Code
-
+/******** Pet Display START **********/
 function displayAnimals(data) {
   for (var i = 0; i < data.animals.length; i++) {
     var name = data.animals[i].name;
@@ -89,15 +84,15 @@ function displayAnimals(data) {
     };
     petData.push(onePet);
   }
-  console.log(petData);
-  //after pet objects are all pushed into array, build the cards with object data
+
+  // After pet objects are all pushed into array, build the cards with petData objects
   buildCards(petData);
   historyButton(petStorageArray);
 }
 
 function buildCards(petArray) {
   mainContainer.innerHTML = "";
-  const div1 = makeEl("div", "row mt"); //Only make 1
+  const div1 = makeEl("div", "row mt");
   for (let i = 0; i < petArray.length; i++) {
     const div2 = makeEl("div", "col s12 l3 m6");
     const div3 = makeEl("div", "card");
@@ -119,7 +114,7 @@ function buildCards(petArray) {
     const pEl = makeEl("p");
     pEl.classList = "pet-info";
     pEl.setAttribute("maxlength", "15");
-    // If no description provided, fill it in
+    // If no description provided, fill in default
     if (!petArray[i].description) {
       pEl.textContent = "Oops! No description was provided for this pet.";
     } else {
@@ -134,53 +129,15 @@ function buildCards(petArray) {
     div3.append(div4, div5, div6);
     div2.append(div3);
     div1.append(div2);
-
-    //when the button is clicked, move to localStorage function (petButton)
-    btn.onclick = function (petArray) {
-      var selectPet = petData;
-      //petInfo(selectPet[i]);
-    };
   }
   mainContainer.append(div1);
 }
 
-//localStorage to save pet in a button at the bottom of the page
-var savePet = function () {
-  //add pet name to localStorage
-  localStorage.setItem("petStorageArray", JSON.stringify(petStorageArray));
-};
-
-function loadPets() {
-  var data = localStorage.getItem("petStorageArray");
-  petStorageArray = JSON.parse(data);
-  if (petStorageArray === null) {
-    petStorageArray = [];
-    return false;
-  }
-}
-
-//Make elements
-const makeEl = function (el, classN, idName) {
-  if (!classN && !idName) {
-    const element = document.createElement(el);
-    return element;
-  } else if (!idName) {
-    const element = document.createElement(el);
-    element.className = `${classN}`;
-    return element;
-  } else {
-    const element = document.createElement(el);
-    element.className = classN;
-    element.id = idName;
-    return element;
-  }
-};
-
+// Displays a single pet
 async function displayPet(data, index, e) {
   mainContainer.innerHTML = "";
-  const div1 = makeEl("div", "container"); //Only make 1
+  const div1 = makeEl("div", "container");
   const div2 = makeEl("div", "flex-row");
-  //const div3 = makeEl("div", "row s12 l6 m6");
   const div4 = makeEl("div", "img-contain flex-col");
   const img = makeEl("img", "pet-page-img");
 
@@ -197,10 +154,9 @@ async function displayPet(data, index, e) {
   const h3 = makeEl("h3", "pet-name");
   h3.textContent = data[index].name;
   div4.append(img);
-  //div4.append(h3);
   const div5 = makeEl("div", "flex-col");
   const pEl = makeEl("p");
-  //pEl.setAttribute("maxlength", "15");
+
   // If no description provided, fill it in
   if (!data[index].description) {
     pEl.textContent = "Oops! No description was provided for this pet.";
@@ -209,7 +165,6 @@ async function displayPet(data, index, e) {
   }
 
   const petDiv = makeEl("div", "col pet-page-info");
-
   const petAge = makeEl("p");
   petAge.textContent = "AGE: " + data[index].age;
   const petSize = makeEl("p");
@@ -233,66 +188,48 @@ async function displayPet(data, index, e) {
     petDescription,
     petContact
   );
-  //div5.append(pEl);
+
   const div6 = makeEl("div", "card-action");
   const btn1 = makeEl("button", "waves-effect waves-light btn", "my-location");
-  // btn1.setAttribute("data-index", `${index}`);
+
   btn1.setAttribute("id", "back-show");
   btn1.innerHTML = 'Back<i class="fa-solid fa-paw"></i>';
-  //const btn2 = makeEl("button", "waves-effect waves-light btn", "my-location");
+
   div5.append(btn1);
   div2.append(div4, div5, div6);
-  //div2.append(div3);
+
   div1.append(div2);
   mainContainer.append(div1);
 
-  const city = petData[index].contact.address.city;
-  let geoLoc = await cityToGeoData(city);
-
-  //localstorage object
-  console.log(petStorageArray);
-
-  //Don't push to local storage if doubled
+  // Don't push to local storage if doubled
   let notDupPet = petStorageArray.findIndex((object) => {
     return object.name === data[index].name;
   });
-  // if notDupPet === -1 it is bacuase it is not found in the local storage array (petStorageArray). So we push it to storage
+  // Ff notDupPet === -1 it is not found in the local storage array (petStorageArray); therfore, we push it to storage.
   if (notDupPet === -1) {
     let petStorageData = data[index];
     petStorageArray.push(petStorageData);
   }
+
   savePet(e);
 
   // Run Google Map
   const state = data[index].contact.address.state;
   const cityName = data[index].contact.address.city;
-  const splits = cityName.split(' ')
-  
+  const splits = cityName.split(" ");
+
   if (splits.length > 1) {
-    googleAddress.setAttribute('src', `https://maps.google.com/maps?q=${splits[0]}%20${splits[1]},%20${state}&t=&z=13&ie=UTF8&iwloc=&output=embed`)
-    googleMap.classList.toggle('display-none');
-
-  }
-  else {
-    googleAddress.setAttribute('src', `https://maps.google.com/maps?q=${splits[0]},%20${state}&t=&z=13&ie=UTF8&iwloc=&output=embed`)
-    googleMap.classList.toggle('display-none');
-  }
-}
-
-function petFlowHandler(e) {
-  if (e.target.getAttribute("data-index")) {
-    showPet(e);
-  }
-
-  if (e.target.getAttribute("id") === "back-show") {
-    googleMap.classList.toggle('display-none');
-    buildCards(petData);
-    historyButton(petStorageArray);
-  }
-  // Pulls pet data from local stroage to build card. (Prevents error when running a new search).
-  if (e.target.getAttribute("data-past")) {
-    let index = e.target.getAttribute("data-past");
-    displayPet(petStorageArray, index);
+    googleAddress.setAttribute(
+      "src",
+      `https://maps.google.com/maps?q=${splits[0]}%20${splits[1]},%20${state}&t=&z=13&ie=UTF8&iwloc=&output=embed`
+    );
+    googleMap.classList.toggle("display-none");
+  } else {
+    googleAddress.setAttribute(
+      "src",
+      `https://maps.google.com/maps?q=${splits[0]},%20${state}&t=&z=13&ie=UTF8&iwloc=&output=embed`
+    );
+    googleMap.classList.toggle("display-none");
   }
 }
 
@@ -302,7 +239,7 @@ function showPet(e) {
 }
 
 function historyButton(petStorageHistory) {
-  //html to display buttons for previously viewed pets
+  // HTML to display buttons for previously viewed pets
   var div1 = document.createElement("div");
   div1.id = "past-pets";
   div1.innerHTML = "<h3>Previously Viewed Pets</h3>";
@@ -326,9 +263,9 @@ function historyButton(petStorageHistory) {
   div1.append(div2);
   mainContainer.appendChild(div1);
 }
-// PET Associated Code Ends
+/******** Pet Display END **********/
 
-// Find user location
+/******** Find User Location START **********/
 function getLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(showPosition, handleError);
@@ -337,21 +274,35 @@ function getLocation() {
   }
 }
 
-// Once user location found, get latitude and longitude
+// Once user location found, save latitude and longitude and pass into Pet Finder
 function showPosition(position) {
   const lat = position.coords.latitude.toString();
   const long = position.coords.longitude.toString();
   // Runs query to API when "Near Me" is clicked
   fetchPets(lat + "," + long);
 }
+/******** User Location END **********/
 
-function handleError(err) {
-  console.warn(`Error(${err.code}): ${err.message}`);
+/******** Handler Functions START**********/
+function petFlowHandler(e) {
+  if (e.target.getAttribute("data-index")) {
+    showPet(e);
+  }
+
+  if (e.target.getAttribute("id") === "back-show") {
+    googleMap.classList.toggle("display-none");
+    buildCards(petData);
+    historyButton(petStorageArray);
+  }
+  // Pulls pet data from local stroage to build card. (Prevents error when running a new search).
+  if (e.target.getAttribute("data-past")) {
+    let index = e.target.getAttribute("data-past");
+    displayPet(petStorageArray, index);
+  }
 }
 
 const myLocationHandler = function () {
   getLocation();
-  //fetchPets(...myLocation);
 };
 
 const zipFormHandler = function (e) {
@@ -360,8 +311,12 @@ const zipFormHandler = function (e) {
   fetchPets(zipCode);
 };
 
-/******** City to Coordinates Conversion **********/
+function handleError(err) {
+  console.warn(`Error(${err.code}): ${err.message}`);
+}
+/******** Handler Function END **********/
 
+/******** City to Coordinates Conversion START **********/
 async function cityToGeoData(city) {
   const respons = await axios.get(
     `https://api.openweathermap.org/geo/1.0/direct?q=${city},US&appid=c20b708b2952fc5492619c70affe0677`
@@ -382,19 +337,55 @@ async function toGeoJSON() {
     cityGeoJSON.push(data);
   }
 }
+/******** City to Coordinates END **********/
+
+/******** SIDE NAVBAR START **********/
+
+nav.addEventListener("click", function () {
+  const elems = document.querySelectorAll(".sidenav");
+  const instances = M.Sidenav.init(elems);
+});
+
+/******** SIDE NAVBAR END **********/
+
+/******** Utility START **********/
+var savePet = function () {
+  //add pet name to localStorage
+  localStorage.setItem("petStorageArray", JSON.stringify(petStorageArray));
+};
+
+function loadPets() {
+  var data = localStorage.getItem("petStorageArray");
+  petStorageArray = JSON.parse(data);
+  if (petStorageArray === null) {
+    petStorageArray = [];
+    return false;
+  }
+}
+
+//Create elements with an id and multi classes
+const makeEl = function (el, classN, idName) {
+  if (!classN && !idName) {
+    const element = document.createElement(el);
+    return element;
+  } else if (!idName) {
+    const element = document.createElement(el);
+    element.className = `${classN}`;
+    return element;
+  } else {
+    const element = document.createElement(el);
+    element.className = classN;
+    element.id = idName;
+    return element;
+  }
+};
+/******** Utility END **********/
 
 /***** Event listeners ******/
-
 myLocation.addEventListener("click", myLocationHandler);
 
 zipForm.addEventListener("submit", zipFormHandler);
 
 mainContainer.addEventListener("click", petFlowHandler);
-
-// Navbar Dropdown
-document.addEventListener("DOMContentLoaded", function () {
-  var elems = document.querySelectorAll(".sidenav");
-  var instances = M.Sidenav.init(elems);
-});
 
 loadPets();
