@@ -6,6 +6,44 @@
   font-weight: 700;
 }
 
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: rgba(8, 183, 226, 0.2);
+}
+
+.mt {
+  margin-top: 1rem;
+}
+
+#main {
+  display: flex;
+}
+
+#past-pets {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1.5rem;
+  border-left: solid rgba(0, 0, 0, 0.5) 0.125rem;
+  flex: 1 25%;
+}
+
+#past-pets h3 {
+  font-size: 1.1rem;
+  font-weight: 900;
+  text-align: center;
+  margin: 0 auto;
+}
+
+#past-pets button {
+  justify-self: center;
+  width: 200px;
+  margin: 0.5rem;
+}
+
 .brand-logo {
   margin-left: 0.5rem;
 }
@@ -22,11 +60,12 @@
 
 #zip {
   font-size: 1.8rem;
+  margin-bottom: 1rem;
 }
 
 label {
   font-size: 2.2rem;
-  padding-bottom: 0.5rem;
+  padding-bottom: .5rem;
 }
 
 .pt-3 {
@@ -34,14 +73,146 @@ label {
 }
 
 .mt-40 {
-  margin-top: 10%;
+  margin-top: 5%;
+}
+
+.mt-40 button{
+  font-size: 1.5rem;
+  font-weight: bolder;
+  width: 250px;
+  height: 50px;
 }
 
 i {
   margin-left: 0.5rem;
 }
 
+.card-content p {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.pet-name {
+  color: black;
+  font-weight: 800;
+  font-size: 25px;
+  text-align: center;
+}
+
+.pet-page-info {
+  margin-left: 25px;
+  font-size: 20px;
+  width: auto;
+}
+
+/* .bold {
+  font-style: italic;
+  font-size: 25px;
+} */
+
+.pet-page-img {
+  padding-top: 10px;
+  padding-left: 15px;
+}
+
+.card-action {
+  padding-left: 15px;
+}
+
+img {
+  height: 400px;
+  width: auto;
+  border-radius: 0.5rem;
+}
+
+.img-contain {
+  width: 100%;
+  height: 50%;
+}
+
+.img-contain img {
+  width: 100%;
+  height: auto;
+  padding: 0;
+}
+
+#back-show {
+  margin-top: 1rem;
+  align-self: flex-start;
+  margin-left: 1.8rem;
+}
+
+#google-map {
+  width: 90%;
+  margin: 0 auto;
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+}
+
+#google-address {
+  width: 100%;
+  height: 500px;
+  border-radius: 1rem;
+  margin: 0 auto;
+  border: solid rgba(11, 152, 247, 0.2) 2px;
+}
+
+.mapouter {
+  padding: 2rem 0;
+  margin-bottom: 2rem;
+}
+
+.page-footer {
+  padding: 1.5rem;
+  margin-top: auto;
+}
+
+/*Utility */
+
+.flex-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background-color: rgba(0, 83, 104, 0.2);
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.display-none {
+  display: none;
+}
+
 /* Media Queries */
+@media only screen and (max-width: 1200px) {
+  #main {
+    flex-direction: column-reverse;
+  }
+
+  #past-pets {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    flex: 1 100%;
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+}
+
 @media only screen and (max-width: 992px) {
   .brand-logo {
     margin-left: 0;
@@ -52,5 +223,34 @@ i {
   #zip-form {
     padding-left: 2rem;
     padding-right: 2rem;
+  }
+
+  #past-pets button {
+    width: 48%;
+  }
+
+  .row {
+    max-width: 600px;
+    width: 100%;
+  }
+
+  .flex-row {
+    flex-direction: column;
+  }
+
+  #google-address {
+    border-radius: 0;
+    margin-bottom: 0;
+    border: none;
+  }
+
+  #google-map {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  #past-pets button {
+    width: 80%;
   }
 }
