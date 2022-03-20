@@ -5,6 +5,8 @@
 const placeholderImg =
   "https://media.istockphoto.com/photos/dog-cardboar-neutral-on-member-of-bone-gang-picture-id187895300?b=1&k=20&m=187895300&s=170667a&w=0&h=Cikee4baMVe3JW0VqfAc3o7LLFDcGGx32HvwbkdMVaM=";
 const mainContainer = document.querySelector("#main");
+const googleMap = document.querySelector('#google-map');
+const googleAddress = document.querySelector('#google-address');
 
 const apiKey = "TTEBA50tsWr7Y8WUwa1zWLN6wVqPx15I3mwNvgJ3P5xoAd95dT";
 const secret = "tnhGSJWW8DI2rD4ANKB6LF3sVJWbi2U1HlaFRZLB";
@@ -142,6 +144,12 @@ function buildCards(petArray) {
   mainContainer.append(div1);
 }
 
+//localStorage to save pet in a button at the bottom of the page
+var savePet = function () {
+  //add pet name to localStorage
+  localStorage.setItem("petStorageArray", JSON.stringify(petStorageArray));
+};
+
 function loadPets() {
   var data = localStorage.getItem("petStorageArray");
   petStorageArray = JSON.parse(data);
@@ -170,10 +178,17 @@ const makeEl = function (el, classN, idName) {
 
 async function displayPet(data, index, e) {
   mainContainer.innerHTML = "";
+<<<<<<< HEAD
   const div1 = makeEl("div", "row"); //Only make 1
   const div2 = makeEl("div", "col s12 l12 m12");
   const div3 = makeEl("div", "col s12 l12 m12");
   const div4 = makeEl("div", "col s12 l12 m12");
+=======
+  const div1 = makeEl("div", "container"); //Only make 1
+  const div2 = makeEl("div", "flex-row");
+  //const div3 = makeEl("div", "row s12 l6 m6");
+  const div4 = makeEl("div", "img-contain flex-col");
+>>>>>>> feature/level-up-css
   const img = makeEl("img", "pet-page-img");
 
   // If no image, use placeholder image from placeholderImg url
@@ -186,11 +201,16 @@ async function displayPet(data, index, e) {
     img.setAttribute("src", data[index].photo[0].medium);
   }
 
+<<<<<<< HEAD
   const span = makeEl("span", "pet-name row s12 l6 m6");
   //span.textContent = data[index].name;
+=======
+  const h3 = makeEl("h3", "pet-name");
+  h3.textContent = data[index].name;
+>>>>>>> feature/level-up-css
   div4.append(img);
-  div4.append(span);
-  const div5 = makeEl("div", "row s12 l6 m6");
+  //div4.append(h3);
+  const div5 = makeEl("div", "flex-col");
   const pEl = makeEl("p");
   //pEl.setAttribute("maxlength", "15");
   // If no description provided, fill it in
@@ -202,24 +222,38 @@ async function displayPet(data, index, e) {
 
   const petDiv = makeEl("div", "col pet-page-info");
 
+<<<<<<< HEAD
   const petName = makeEl("p", "pet-name");
     petName.textContent = data[index].name;  
+=======
+>>>>>>> feature/level-up-css
   const petAge = makeEl("p");
-    petAge.textContent = "AGE: " + data[index].age;
-    const petSize = makeEl("p");
-    petSize.textContent = "SIZE: " + data[index].size;
+  petAge.textContent = "AGE: " + data[index].age;
+  const petSize = makeEl("p");
+  petSize.textContent = "SIZE: " + data[index].size;
   const petBreed = makeEl("p");
-    petBreed.textContent = "BREED: " + data[index].breed['primary'];
+  petBreed.textContent = "BREED: " + data[index].breed["primary"];
   const petColor = makeEl("p");
-    petColor.textContent = "COLOR: " + data[index].color['primary'];
+  petColor.textContent = "COLOR: " + data[index].color["primary"];
   const petDescription = makeEl("p");
-    petDescription.textContent = data[index].description;
+  petDescription.textContent = data[index].description;
   const petContact = makeEl("p");
-    petContact.textContent = "CONTACT: " + data[index].contact['email'];
+  petContact.textContent = "CONTACT: " + data[index].contact["email"];
 
-  div5.append(span);
+  div5.append(h3);
   div5.append(petDiv);
+<<<<<<< HEAD
   petDiv.append(petName, petAge, petSize, petBreed, petColor, petDescription, petContact);
+=======
+  petDiv.append(
+    petAge,
+    petSize,
+    petBreed,
+    petColor,
+    petDescription,
+    petContact
+  );
+>>>>>>> feature/level-up-css
   //div5.append(pEl);
   const div6 = makeEl("div", "card-action");
   const btn1 = makeEl("button", "waves-effect waves-light btn", "my-location");
@@ -227,9 +261,9 @@ async function displayPet(data, index, e) {
   btn1.setAttribute("id", "back-show");
   btn1.innerHTML = 'Back<i class="fa-solid fa-paw"></i>';
   //const btn2 = makeEl("button", "waves-effect waves-light btn", "my-location");
-  div6.append(btn1);
-  div3.append(div4, div5, div6);
-  div2.append(div3);
+  div5.append(btn1);
+  div2.append(div4, div5, div6);
+  //div2.append(div3);
   div1.append(div2);
   mainContainer.append(div1);
 
@@ -248,13 +282,22 @@ async function displayPet(data, index, e) {
     let petStorageData = data[index];
     petStorageArray.push(petStorageData);
   }
+  savePet(e);
 
-  //savePet(e);
-}
+  // Run Google Map
+  const state = data[index].contact.address.state;
+  const cityName = data[index].contact.address.city;
+  const splits = cityName.split(' ')
+  
+  if (splits.length > 1) {
+    googleAddress.setAttribute('src', `https://maps.google.com/maps?q=${splits[0]}%20${splits[1]},%20${state}&t=&z=13&ie=UTF8&iwloc=&output=embed`)
+    googleMap.classList.toggle('display-none');
 
-function showPet(e) {
-  let petIndex = parseInt(e.target.getAttribute("data-index"));
-  displayPet(petData, petIndex); //index of the pet object passed into displayPet();
+  }
+  else {
+    googleAddress.setAttribute('src', `https://maps.google.com/maps?q=${splits[0]},%20${state}&t=&z=13&ie=UTF8&iwloc=&output=embed`)
+    googleMap.classList.toggle('display-none');
+  }
 }
 
 function petFlowHandler(e) {
@@ -271,6 +314,11 @@ function petFlowHandler(e) {
     let index = e.target.getAttribute("data-past");
     displayPet(petStorageArray, index);
   }
+}
+
+function showPet(e) {
+  let petIndex = parseInt(e.target.getAttribute("data-index"));
+  displayPet(petData, petIndex); //index of the pet object passed into displayPet();
 }
 
 function historyButton(petStorageHistory) {
@@ -298,13 +346,7 @@ function historyButton(petStorageHistory) {
   div1.append(div2);
   mainContainer.appendChild(div1);
 }
-
 // PET Associated Code Ends
-
-//card is created; elements to hold each piece of data is also created and
-//assigned a variable. 
-//the ""Data variables are added into the textContent
-//classes also added, depending on how we want to classify them
 
 // Find user location
 function getLocation() {
