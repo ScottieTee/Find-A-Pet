@@ -6,24 +6,28 @@
   font-weight: 700;
 }
 
-body{
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  justify-content: space-between;
   background-color: rgba(8, 183, 226, 0.2);
 }
 
-.mt{
+.mt {
   margin-top: 1rem;
 }
 
-#main{
+#main {
   display: flex;
 }
 
-#past-pets{
+#past-pets {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 1.5rem;
-  border-left: solid rgba(0, 0, 0, 0.5) .125rem;
+  border-left: solid rgba(0, 0, 0, 0.5) 0.125rem;
   flex: 1 25%;
 }
 
@@ -34,12 +38,11 @@ body{
   margin: 0 auto;
 }
 
-#past-pets button{
+#past-pets button {
   justify-self: center;
   width: 200px;
-  margin: .5rem;
+  margin: 0.5rem;
 }
-
 
 .brand-logo {
   margin-left: 0.5rem;
@@ -76,7 +79,7 @@ i {
   margin-left: 0.5rem;
 }
 
-.card-content p{
+.card-content p {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -99,32 +102,57 @@ i {
   padding-left: 10px;
 }
 
-img{
+img {
   height: 400px;
   width: auto;
   border-radius: 0.5rem;
 }
 
-.img-contain{
+.img-contain {
   width: 100%;
   height: 50%;
 }
 
-.img-contain img{
+.img-contain img {
   width: 100%;
   height: auto;
   padding: 0;
 }
 
-#back-show{
+#back-show {
   margin-top: 1rem;
   align-self: flex-start;
   margin-left: 1.8rem;
 }
 
+#google-map {
+  width: 90%;
+  margin: 0 auto;
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+}
+
+#google-address {
+  width: 100%;
+  height: 500px;
+  border-radius: 1rem;
+  margin: 0 auto;
+  border: solid rgba(11, 152, 247, 0.2) 2px;
+}
+
+.mapouter {
+  padding: 2rem 0;
+  margin-bottom: 2rem;
+}
+
+.page-footer {
+  padding: 1.5rem;
+  margin-top: auto;
+}
+
 /*Utility */
 
-.flex-row{
+.flex-row {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -134,30 +162,32 @@ img{
   background-color: rgba(0, 83, 104, 0.2);
 }
 
-.flex-col{
+.flex-col {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
 }
 
+.display-none {
+  display: none;
+}
 
 /* Media Queries */
 @media only screen and (max-width: 1200px) {
-  #main{
+  #main {
     flex-direction: column-reverse;
   }
 
-  #past-pets{
+  #past-pets {
     flex-direction: row;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
     flex: 1 100%;
-
   }
 
-  .button-container{
+  .button-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -177,22 +207,32 @@ img{
     padding-right: 2rem;
   }
 
-  #past-pets button{
+  #past-pets button {
     width: 48%;
   }
 
-  .row{
+  .row {
     max-width: 600px;
     width: 100%;
   }
 
-  .flex-row{
+  .flex-row {
     flex-direction: column;
+  }
+
+  #google-address {
+    border-radius: 0;
+    margin-bottom: 0;
+    border: none;
+  }
+
+  #google-map {
+    width: 100%;
   }
 }
 
 @media only screen and (max-width: 400px) {
-  #past-pets button{
+  #past-pets button {
     width: 80%;
   }
 }

@@ -5,6 +5,8 @@
 const placeholderImg =
   "https://media.istockphoto.com/photos/dog-cardboar-neutral-on-member-of-bone-gang-picture-id187895300?b=1&k=20&m=187895300&s=170667a&w=0&h=Cikee4baMVe3JW0VqfAc3o7LLFDcGGx32HvwbkdMVaM=";
 const mainContainer = document.querySelector("#main");
+const googleMap = document.querySelector('#google-map');
+const googleAddress = document.querySelector('#google-address');
 
 const apiKey = "TTEBA50tsWr7Y8WUwa1zWLN6wVqPx15I3mwNvgJ3P5xoAd95dT";
 const secret = "tnhGSJWW8DI2rD4ANKB6LF3sVJWbi2U1HlaFRZLB";
@@ -260,6 +262,21 @@ async function displayPet(data, index, e) {
     petStorageArray.push(petStorageData);
   }
   savePet(e);
+
+  // Run Google Map
+  const state = data[index].contact.address.state;
+  const cityName = data[index].contact.address.city;
+  const splits = cityName.split(' ')
+  
+  if (splits.length > 1) {
+    googleAddress.setAttribute('src', `https://maps.google.com/maps?q=${splits[0]}%20${splits[1]},%20${state}&t=&z=13&ie=UTF8&iwloc=&output=embed`)
+    googleMap.classList.toggle('display-none');
+
+  }
+  else {
+    googleAddress.setAttribute('src', `https://maps.google.com/maps?q=${splits[0]},%20${state}&t=&z=13&ie=UTF8&iwloc=&output=embed`)
+    googleMap.classList.toggle('display-none');
+  }
 }
 
 function petFlowHandler(e) {
