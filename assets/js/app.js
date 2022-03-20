@@ -142,36 +142,6 @@ function buildCards(petArray) {
   mainContainer.append(div1);
 }
 
-//make divs and p for pet page content
-// const petInfo = function (selectPet) {
-//   //var petDiv = document.createElement("div");
-//   //petDiv.classList.add = "row";
-//   var petDivInfoEl = document.createElement("div");
-//   //petDivInfo.classList.add = "col s12 m6 l6 pet-page-info";
-
-
-//   petDivInfoEl.textContent = petDivInfo;
-
-//   selectPetPage.push(petDivInfo);
-
-//   //petDivInfo.push(petDivInfoEl);
-    
-//   for (var i = 0; i < petDivInfo.length; i++) {
-//     var petInfoEl = document.createElement("p");
-//     petInfoEl.textContent = petDivInfo;
-//   };
-//   console.log(petDivInfo);
-
-//   const petDiv = makeEl("div");
-//   mainContainer.appendChild(petDivInfoEl);
-// };
-
-// //localStorage to save pet in a button at the bottom of the page
-// var savePet = function () {
-//   //add pet name to localStorage
-//   localStorage.setItem("petStorageArray", JSON.stringify(petStorageArray));
-// };
-
 function loadPets() {
   var data = localStorage.getItem("petStorageArray");
   petStorageArray = JSON.parse(data);
@@ -205,7 +175,7 @@ async function displayPet(data, index, e) {
   const div2 = makeEl("div", "col s12 l3 m6");
   const div3 = makeEl("div", "row s12 l6 m6");
   const div4 = makeEl("div");
-  const img = makeEl("img");
+  const img = makeEl("img", "pet-page-img");
 
   // If no image, use placeholder image from placeholderImg url
 
@@ -221,7 +191,7 @@ async function displayPet(data, index, e) {
   span.textContent = data[index].name;
   div4.append(img);
   div4.append(span);
-  const div5 = makeEl("div");
+  const div5 = makeEl("div", "row s12 l6 m6");
   const pEl = makeEl("p");
   //pEl.setAttribute("maxlength", "15");
   // If no description provided, fill it in
@@ -230,29 +200,25 @@ async function displayPet(data, index, e) {
   } else {
     pEl.textContent = data[index].description;
   }
-  const petDiv = makeEl("div");
-  var petName = data[index].name;
-  var petAge = data[index].age;
-  var petBreed = data[index].breeds;
-  var petSize = data[index].size;
-  var petColor = data[index].colors;
-  var petDescription = data[index].description;
-  var petContact = data[index].contact;
 
-  var petDivInfo = {
-    petName,
-    petAge,
-    petBreed,
-    petSize,
-    petColor,
-    petDescription,
-    petContact
-};
-petDiv.append(petDivInfo);
-console.log(petDivInfo);
+  const petDiv = makeEl("div", "col pet-page-info");
+    
+  const petAge = makeEl("p");
+    petAge.textContent = "AGE: " + data[index].age;
+    const petSize = makeEl("p");
+    petSize.textContent = "SIZE: " + data[index].size;
+  const petBreed = makeEl("p");
+    petBreed.textContent = "BREED: " + data[index].breed['primary'];
+  const petColor = makeEl("p");
+    petColor.textContent = "COLOR: " + data[index].color['primary'];
+  const petDescription = makeEl("p");
+    petDescription.textContent = data[index].description;
+  const petContact = makeEl("p");
+    petContact.textContent = "CONTACT: " + data[index].contact['email'];
 
   div5.append(span);
   div5.append(petDiv);
+  petDiv.append(petAge, petSize, petBreed, petColor, petDescription, petContact);
   //div5.append(pEl);
   const div6 = makeEl("div", "card-action");
   const btn1 = makeEl("button", "waves-effect waves-light btn", "my-location");
