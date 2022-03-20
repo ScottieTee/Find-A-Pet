@@ -81,7 +81,7 @@ i {
 .pet-name {
   color: black;
   font-weight: 800;
-  margin-left: 25px;
+  /* margin-left: 15px; */
   font-size: 25px;
 }
 
@@ -89,11 +89,21 @@ i {
   padding-top: 10px;
   margin-left: 25px;
   font-size: 20px;
+  width: auto;
 }
+
+/* .bold {
+  font-style: italic;
+  font-size: 25px;
+} */
 
 .pet-page-img {
   padding-top: 10px;
-  padding-left: 10px;
+  padding-left: 15px;
+}
+
+.card-action {
+  padding-left: 15px;
 }
 
 img{

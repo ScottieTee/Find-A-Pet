@@ -171,9 +171,9 @@ const makeEl = function (el, classN, idName) {
 async function displayPet(data, index, e) {
   mainContainer.innerHTML = "";
   const div1 = makeEl("div", "row"); //Only make 1
-  const div2 = makeEl("div", "col s12 l3 m6");
-  const div3 = makeEl("div", "row s12 l6 m6");
-  const div4 = makeEl("div");
+  const div2 = makeEl("div", "col s12 l12 m12");
+  const div3 = makeEl("div", "col s12 l12 m12");
+  const div4 = makeEl("div", "col s12 l12 m12");
   const img = makeEl("img", "pet-page-img");
 
   // If no image, use placeholder image from placeholderImg url
@@ -186,8 +186,8 @@ async function displayPet(data, index, e) {
     img.setAttribute("src", data[index].photo[0].medium);
   }
 
-  const span = makeEl("span", "pet-name");
-  span.textContent = data[index].name;
+  const span = makeEl("span", "pet-name row s12 l6 m6");
+  //span.textContent = data[index].name;
   div4.append(img);
   div4.append(span);
   const div5 = makeEl("div", "row s12 l6 m6");
@@ -201,7 +201,9 @@ async function displayPet(data, index, e) {
   }
 
   const petDiv = makeEl("div", "col pet-page-info");
-    
+
+  const petName = makeEl("p", "pet-name");
+    petName.textContent = data[index].name;  
   const petAge = makeEl("p");
     petAge.textContent = "AGE: " + data[index].age;
     const petSize = makeEl("p");
@@ -217,7 +219,7 @@ async function displayPet(data, index, e) {
 
   div5.append(span);
   div5.append(petDiv);
-  petDiv.append(petAge, petSize, petBreed, petColor, petDescription, petContact);
+  petDiv.append(petName, petAge, petSize, petBreed, petColor, petDescription, petContact);
   //div5.append(pEl);
   const div6 = makeEl("div", "card-action");
   const btn1 = makeEl("button", "waves-effect waves-light btn", "my-location");
