@@ -1,3 +1,8 @@
+//key and secret used in fetchAccessToken function to get access token
+
+//Note: the use of async and await are used in the place of fetch() and .then() (fetch an still be used if desired)
+//It is an easier and very common way of handling promises to avoid complicated call back functions. Mad possible by a the Axios CDN (line 15 of index.html)
+
 const placeholderImg =
   "https://media.istockphoto.com/photos/dog-cardboar-neutral-on-member-of-bone-gang-picture-id187895300?b=1&k=20&m=187895300&s=170667a&w=0&h=Cikee4baMVe3JW0VqfAc3o7LLFDcGGx32HvwbkdMVaM=";
 const mainContainer = document.querySelector("#main");
@@ -15,9 +20,6 @@ const zipForm = document.querySelector("#zip-form");
 let petStorageArray = [];
 var petData = [];
 var selectPetPage = [];
-
-const cities = [];
-let cityGeoJSON = [];
 
 const fetchAccessToken = async () => {
   const params = new URLSearchParams();
@@ -49,19 +51,14 @@ const fetchPets = (location) => {
   }).then((res) => {
     if (res) {
       res.json().then((data) => {
-        for (let i = 0; i < data.animals.length; i++) {
-          let city = data.animals[i].contact.address.city;
-          cities.push(city);
-        }
-        toGeoJSON();
-        displayAnimals(data);
+        formatAnimalData(data);
       });
     }
   });
 };
 
 /******** Pet Display START **********/
-function displayAnimals(data) {
+function formatAnimalData(data) {
   for (var i = 0; i < data.animals.length; i++) {
     var name = data.animals[i].name;
     var age = data.animals[i].age;
@@ -316,38 +313,6 @@ function handleError(err) {
 }
 /******** Handler Function END **********/
 
-/******** City to Coordinates Conversion START **********/
-async function cityToGeoData(city) {
-  const respons = await axios.get(
-    `https://api.openweathermap.org/geo/1.0/direct?q=${city},US&appid=c20b708b2952fc5492619c70affe0677`
-  );
-  if (respons) {
-    const lat = respons.data[0].lat;
-    const lon = respons.data[0].lon;
-    const geoData = [lon, lat];
-    return geoData;
-  } else {
-    alert("Error with geo location");
-  }
-}
-
-async function toGeoJSON() {
-  for (let i = 0; i < cities.length; i++) {
-    let data = await cityToGeoData(cities[i]);
-    cityGeoJSON.push(data);
-  }
-}
-/******** City to Coordinates END **********/
-
-/******** SIDE NAVBAR START **********/
-
-nav.addEventListener("click", function () {
-  const elems = document.querySelectorAll(".sidenav");
-  const instances = M.Sidenav.init(elems);
-});
-
-/******** SIDE NAVBAR END **********/
-
 /******** Utility START **********/
 var savePet = function () {
   //add pet name to localStorage
@@ -381,11 +346,37 @@ const makeEl = function (el, classN, idName) {
 };
 /******** Utility END **********/
 
+/******** SIDE NAVBAR START **********/
+
+nav.addEventListener("click", function () {
+  const elems = document.querySelectorAll(".sidenav");
+  const instances = M.Sidenav.init(elems);
+});
+
+/******** SIDE NAVBAR END **********/
+
 /***** Event listeners ******/
 myLocation.addEventListener("click", myLocationHandler);
+// myLocationHandler runs the getLocation function, which uses the client side function navigator.geolocation.getCurrentPosition() (used to get the current position of the device).
+// navigator.geolocation.getCurrentPosition() then runs showPosition()
+// The latitude and longitude are then pulled from the position object in showPosition()
+// latitude and longitude are then passed into fetchPets() which queries the pet database and send back pets near you as the variable "data".
+// formatAnimalData() takes in the resolved promise data and formats data into objects. 
+// The new pet objects are then pushed into petData[] for subsequent use.
+// buildCards() and historyButton() are then called and render 20 pet cards and past searches 
 
 zipForm.addEventListener("submit", zipFormHandler);
+// zipFormHandler similer to myLocationHandler, just doesnt use navigator.geolocation.getCurrentPosition()
+// zip code is passed into fetchPets() which queries the pet database and send back pets near you as the variable "data".
+// formatAnimalData() takes in the resolved promise data and formats data into objects. 
+// The new pet objects are then pushed into petData[] for subsequent use.
+// buildCards() and historyButton() are then called and render 20 pet cards and past searches 
 
-mainContainer.addEventListener("click", petFlowHandler);
+mainContainer.addEventListener("click", petFlowHandler);  
+// petFlowHandler looks for click events on various buttons and determines how to handle that event. 
+// If an element with the attribute of "data-index” (Adopt Me Button) is clicked, showPet() is ran and passes “data-index” value to displayPet() and renders the pet selected.  
+// displayPet() pulls form petData[], which contains pet objects from the Pet Finder API, uses the index received passed to it from showPet(). That pet is then subsequently rendered.
+// If the target is of id === "back-show", buildCards() is ran, which renders pet objects from petData[]. historyButton() is also invoked and creates buttons from pets stored in local storage via petStroageArray[]
+// If an element with the attribute of "data-past" (pet history buttons), displayPet() renders the pet from petStorageArray[] according to its “data-past” value (index).
 
 loadPets();

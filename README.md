@@ -11,13 +11,13 @@
   ***
   ## License
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
-***
+**
 ## Description
 Looking for a furry friend? Search by zip code or your current location. you’re met with the top 20 adoptable pet results within your surrounding area. Included in this is an overview of information and characteristics that can aid your search in finding the best fit for your needs. The overview of the page includes a photo and the name of each adoptable animal along with a button to view more info. When you find your perfect match, you’re brought to a page that gives you more information on your chosen pet—this includes the name, age, size, color, breed, a quick description, and a map to view their location. With easy access to crucial information on each adoptable pet, you’ll be sure to fall in love with your new forever friend!
-*** 
+**
 ## Installation
 Simply clone the repository and run the index.html page. Or click [Find-A-Pet](https://scottietee.github.io/Find-A-Pet/index.html) to view on GitHub pages.
-***
+**
 ## Usage
 Search for pets within a 100-mile radius of either your current location or a chosen zip code.
 ***     
