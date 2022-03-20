@@ -142,6 +142,12 @@ function buildCards(petArray) {
   mainContainer.append(div1);
 }
 
+//localStorage to save pet in a button at the bottom of the page
+var savePet = function () {
+  //add pet name to localStorage
+  localStorage.setItem("petStorageArray", JSON.stringify(petStorageArray));
+};
+
 function loadPets() {
   var data = localStorage.getItem("petStorageArray");
   petStorageArray = JSON.parse(data);
@@ -170,10 +176,10 @@ const makeEl = function (el, classN, idName) {
 
 async function displayPet(data, index, e) {
   mainContainer.innerHTML = "";
-  const div1 = makeEl("div", "row"); //Only make 1
-  const div2 = makeEl("div", "col s12 l3 m6");
-  const div3 = makeEl("div", "row s12 l6 m6");
-  const div4 = makeEl("div");
+  const div1 = makeEl("div", "container"); //Only make 1
+  const div2 = makeEl("div", "flex-row");
+  //const div3 = makeEl("div", "row s12 l6 m6");
+  const div4 = makeEl("div", "img-contain flex-col");
   const img = makeEl("img", "pet-page-img");
 
   // If no image, use placeholder image from placeholderImg url
@@ -186,11 +192,11 @@ async function displayPet(data, index, e) {
     img.setAttribute("src", data[index].photo[0].medium);
   }
 
-  const span = makeEl("span", "pet-name");
-  span.textContent = data[index].name;
+  const h3 = makeEl("h3", "pet-name");
+  h3.textContent = data[index].name;
   div4.append(img);
-  div4.append(span);
-  const div5 = makeEl("div", "row s12 l6 m6");
+  //div4.append(h3);
+  const div5 = makeEl("div", "flex-col");
   const pEl = makeEl("p");
   //pEl.setAttribute("maxlength", "15");
   // If no description provided, fill it in
@@ -201,23 +207,30 @@ async function displayPet(data, index, e) {
   }
 
   const petDiv = makeEl("div", "col pet-page-info");
-    
-  const petAge = makeEl("p");
-    petAge.textContent = "AGE: " + data[index].age;
-    const petSize = makeEl("p");
-    petSize.textContent = "SIZE: " + data[index].size;
-  const petBreed = makeEl("p");
-    petBreed.textContent = "BREED: " + data[index].breed['primary'];
-  const petColor = makeEl("p");
-    petColor.textContent = "COLOR: " + data[index].color['primary'];
-  const petDescription = makeEl("p");
-    petDescription.textContent = data[index].description;
-  const petContact = makeEl("p");
-    petContact.textContent = "CONTACT: " + data[index].contact['email'];
 
-  div5.append(span);
+  const petAge = makeEl("p");
+  petAge.textContent = "AGE: " + data[index].age;
+  const petSize = makeEl("p");
+  petSize.textContent = "SIZE: " + data[index].size;
+  const petBreed = makeEl("p");
+  petBreed.textContent = "BREED: " + data[index].breed["primary"];
+  const petColor = makeEl("p");
+  petColor.textContent = "COLOR: " + data[index].color["primary"];
+  const petDescription = makeEl("p");
+  petDescription.textContent = data[index].description;
+  const petContact = makeEl("p");
+  petContact.textContent = "CONTACT: " + data[index].contact["email"];
+
+  div5.append(h3);
   div5.append(petDiv);
-  petDiv.append(petAge, petSize, petBreed, petColor, petDescription, petContact);
+  petDiv.append(
+    petAge,
+    petSize,
+    petBreed,
+    petColor,
+    petDescription,
+    petContact
+  );
   //div5.append(pEl);
   const div6 = makeEl("div", "card-action");
   const btn1 = makeEl("button", "waves-effect waves-light btn", "my-location");
@@ -225,9 +238,9 @@ async function displayPet(data, index, e) {
   btn1.setAttribute("id", "back-show");
   btn1.innerHTML = 'Back<i class="fa-solid fa-paw"></i>';
   //const btn2 = makeEl("button", "waves-effect waves-light btn", "my-location");
-  div6.append(btn1);
-  div3.append(div4, div5, div6);
-  div2.append(div3);
+  div5.append(btn1);
+  div2.append(div4, div5, div6);
+  //div2.append(div3);
   div1.append(div2);
   mainContainer.append(div1);
 
@@ -246,13 +259,7 @@ async function displayPet(data, index, e) {
     let petStorageData = data[index];
     petStorageArray.push(petStorageData);
   }
-
-  //savePet(e);
-}
-
-function showPet(e) {
-  let petIndex = parseInt(e.target.getAttribute("data-index"));
-  displayPet(petData, petIndex); //index of the pet object passed into displayPet();
+  savePet(e);
 }
 
 function petFlowHandler(e) {
@@ -269,6 +276,11 @@ function petFlowHandler(e) {
     let index = e.target.getAttribute("data-past");
     displayPet(petStorageArray, index);
   }
+}
+
+function showPet(e) {
+  let petIndex = parseInt(e.target.getAttribute("data-index"));
+  displayPet(petData, petIndex); //index of the pet object passed into displayPet();
 }
 
 function historyButton(petStorageHistory) {
@@ -296,13 +308,7 @@ function historyButton(petStorageHistory) {
   div1.append(div2);
   mainContainer.appendChild(div1);
 }
-
 // PET Associated Code Ends
-
-//card is created; elements to hold each piece of data is also created and
-//assigned a variable. 
-//the ""Data variables are added into the textContent
-//classes also added, depending on how we want to classify them
 
 // Find user location
 function getLocation() {
