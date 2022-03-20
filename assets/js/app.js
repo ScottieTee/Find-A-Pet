@@ -178,17 +178,10 @@ const makeEl = function (el, classN, idName) {
 
 async function displayPet(data, index, e) {
   mainContainer.innerHTML = "";
-<<<<<<< HEAD
-  const div1 = makeEl("div", "row"); //Only make 1
-  const div2 = makeEl("div", "col s12 l12 m12");
-  const div3 = makeEl("div", "col s12 l12 m12");
-  const div4 = makeEl("div", "col s12 l12 m12");
-=======
   const div1 = makeEl("div", "container"); //Only make 1
   const div2 = makeEl("div", "flex-row");
   //const div3 = makeEl("div", "row s12 l6 m6");
   const div4 = makeEl("div", "img-contain flex-col");
->>>>>>> feature/level-up-css
   const img = makeEl("img", "pet-page-img");
 
   // If no image, use placeholder image from placeholderImg url
@@ -201,13 +194,8 @@ async function displayPet(data, index, e) {
     img.setAttribute("src", data[index].photo[0].medium);
   }
 
-<<<<<<< HEAD
-  const span = makeEl("span", "pet-name row s12 l6 m6");
-  //span.textContent = data[index].name;
-=======
   const h3 = makeEl("h3", "pet-name");
   h3.textContent = data[index].name;
->>>>>>> feature/level-up-css
   div4.append(img);
   //div4.append(h3);
   const div5 = makeEl("div", "flex-col");
@@ -222,11 +210,6 @@ async function displayPet(data, index, e) {
 
   const petDiv = makeEl("div", "col pet-page-info");
 
-<<<<<<< HEAD
-  const petName = makeEl("p", "pet-name");
-    petName.textContent = data[index].name;  
-=======
->>>>>>> feature/level-up-css
   const petAge = makeEl("p");
   petAge.textContent = "AGE: " + data[index].age;
   const petSize = makeEl("p");
@@ -242,9 +225,6 @@ async function displayPet(data, index, e) {
 
   div5.append(h3);
   div5.append(petDiv);
-<<<<<<< HEAD
-  petDiv.append(petName, petAge, petSize, petBreed, petColor, petDescription, petContact);
-=======
   petDiv.append(
     petAge,
     petSize,
@@ -253,7 +233,6 @@ async function displayPet(data, index, e) {
     petDescription,
     petContact
   );
->>>>>>> feature/level-up-css
   //div5.append(pEl);
   const div6 = makeEl("div", "card-action");
   const btn1 = makeEl("button", "waves-effect waves-light btn", "my-location");
@@ -306,6 +285,7 @@ function petFlowHandler(e) {
   }
 
   if (e.target.getAttribute("id") === "back-show") {
+    googleMap.classList.toggle('display-none');
     buildCards(petData);
     historyButton(petStorageArray);
   }
