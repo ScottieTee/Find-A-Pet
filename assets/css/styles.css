@@ -78,15 +78,29 @@ i {
   white-space: nowrap;
 }
 
-.pet-name{
+.pet-name {
   color: black;
   font-weight: 800;
+  margin-left: 25px;
+  font-size: 25px;
+}
+
+.pet-page-info {
+  padding-top: 10px;
+  margin-left: 25px;
+  font-size: 20px;
+}
+
+.pet-page-img {
+  padding-top: 10px;
+  padding-left: 10px;
 }
 
 img{
   height: 400px;
   width: auto;
 }
+
 
 /* Media Queries */
 @media only screen and (max-width: 1200px) {
