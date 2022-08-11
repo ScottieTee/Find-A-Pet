@@ -5,7 +5,7 @@
   3. [Installation](#installation)
   4. [Usage](#isage)  
   5. [Contributing](#contributing)
-  6. [Tests](#tests)
+  6. [Tech](#tech)
   7. [Contributors](#contributors)
   8. [GitHub-Pages](#github-pages)
   ***
@@ -24,9 +24,12 @@ Search for pets within a 100-mile radius of either your current location or a ch
 ## Contributing
 Create a fork of the project. Clone to create a local repository. Make changes to your copy the the project, commit and push the changes. When you are ready to share the results of your work, [rebase](https://www.jetbrains.com/help/ruby/contribute-to-projects.html?source=google&medium=cpc&campaign=10116875233&gclid=CjwKCAjwoduRBhA4EiwACL5RPwRCscIRY-jH-olu0ltpGsBNk4a8XTZqANyML6Ff8yHeTCtiOt1hqRoCP5YQAvD_BwE#rebase-fork) your fork on the current HEAD of the master branch in the original project. This is needed to make sure your changes do not conflict with new commits that were pushed after you created your fork. Create a pull request to suggest your changes to the original project.
 ***
-## Tests
-Test methods have yet to be established. 
+## Tech
+Tech used was JS, HTML, CSS, and tailwind.
 ***
+
+![Screenshot](./assets/css/adoptapet.png)
+
 ## GitHub-Pages
 ### [Find-A-Pet](https://scottietee.github.io/Find-A-Pet/index.html)
 *** 
